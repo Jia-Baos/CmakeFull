@@ -1,0 +1,17 @@
+%YAML:1.0
+---
+# base info
+task: det
+model: nanodet
+framework: mnn
+
+# detection model params
+input_width: 320
+input_height: 224
+num_thread: 4
+nms_threshold: 0.5
+confidence_threshold: 0.7
+
+# label need to be extracted
+class: 
+  - qr
