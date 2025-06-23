@@ -7,10 +7,18 @@
 /**
  * @brief 模型类型枚举
  */
-enum ModelType {
-    kDetection = 0,
+enum class ModelType {
+    kDetection,
     kInstanceSegmentation
 };
+
+inline std::string ModelTypeToString(ModelType type) {
+    switch(type) {
+        case ModelType::kDetection: return "kDetection";
+        case ModelType::kInstanceSegmentation: return "kInstanceSegmentation";
+        default: return "Unknown";
+    }
+}
 
 struct ModelSpec {
     std::string model_name;
@@ -33,6 +41,7 @@ struct ModelSpec {
 class DLOutput {
 public:
     DLOutput(ModelType type) : m_type(type) {}
+    virtual ~DLOutput() {}
     ModelType m_type;
 };
 

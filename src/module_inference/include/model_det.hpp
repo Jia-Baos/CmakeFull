@@ -3,14 +3,15 @@
 #include "./model_base.hpp"
 
 struct DetResult {
-    int cls;       // 类别
-    float score;   // 置信度
-    cv::Rect bbox; // 检测框
+    int cls;         // 类别
+    float score;     // 置信度
+    cv::Rect2f bbox; // 检测框(Point, Point)
 };
 
 class DetOutput : public DLOutput {
 public:
     DetOutput() : DLOutput(ModelType::kDetection) {}
+    virtual ~DetOutput() {}
     std::vector<DetResult> m_res{};
 };
 

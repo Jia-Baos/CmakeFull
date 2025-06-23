@@ -53,90 +53,6 @@ void generate_grid_center_priors(const int input_height, const int input_width, 
     }
 }
 
-void NanoDetMNN::decode_infer(MNN::Tensor *pred, std::vector<CenterPrior> &center_priors, float threshold, std::vector<std::vector<BoxInfo>> &results)
-{
-    const int num_points = center_priors.size();
-    const int num_channels = num_class + (reg_max + 1) * 4;
-    // printf("num_points:%d\n", num_points);
-
-    // cv::Mat debug_heatmap = cv::Mat(feature_h, feature_w, CV_8UC3);
-    for (int idx = 0; idx < num_points; idx++) {
-        const int ct_x = center_priors[idx].x;
-        const int ct_y = center_priors[idx].y;
-        const int stride = center_priors[idx].stride;
-
-        // preds is a tensor with shape [num_points, num_channels]
-        const float *scores = pred->host<float>() + (idx * num_channels);
-
-        float score = 0;
-        int cur_label = 0;
-        for (int label = 0; label < num_class; label++) {
-            if (scores[label] > score) {
-                score = scores[label];
-                cur_label = label;
-            }
-        }
-        if (score > threshold) {
-            const float *bbox_pred = pred->host<float>() + idx * num_channels + num_class;
-            results[cur_label].push_back(disPred2Bbox(bbox_pred, cur_label, score, ct_x, ct_y, stride));
-        }
-    }
-}
-
-BoxInfo NanoDetMNN::disPred2Bbox(const float *&dfl_det, int label, float score, int x, int y, int stride)
-{
-    float ct_x = x * stride;
-    float ct_y = y * stride;
-    std::vector<float> dis_pred;
-    dis_pred.resize(4);
-    for (int i = 0; i < 4; i++) {
-        float dis = 0;
-        float *dis_after_sm = new float[reg_max + 1];
-        activation_function_softmax(dfl_det + i * (reg_max + 1), dis_after_sm, reg_max + 1);
-        for (int j = 0; j < reg_max + 1; j++) {
-            dis += j * dis_after_sm[j];
-        }
-        dis *= stride;
-        // std::cout << "dis:" << dis << std::endl;
-        dis_pred[i] = dis;
-        delete[] dis_after_sm;
-    }
-    float xmin = (std::max)(ct_x - dis_pred[0], .0f);
-    float ymin = (std::max)(ct_y - dis_pred[1], .0f);
-    float xmax = (std::min)(ct_x + dis_pred[2], (float)input_size[1]);
-    float ymax = (std::min)(ct_y + dis_pred[3], (float)input_size[0]);
-
-    // std::cout << xmin << "," << ymin << "," << xmax << "," << xmax << "," << std::endl;
-    return BoxInfo{ xmin, ymin, xmax, ymax, score, label };
-}
-
-void NanoDetMNN::nms(std::vector<BoxInfo> &input_boxes, float nms_thresh)
-{
-    std::sort(input_boxes.begin(), input_boxes.end(), [](BoxInfo a, BoxInfo b) { return a.score > b.score; });
-    std::vector<float> vArea(input_boxes.size());
-    for (int i = 0; i < int(input_boxes.size()); ++i) {
-        vArea[i] = (input_boxes.at(i).x2 - input_boxes.at(i).x1 + 1) * (input_boxes.at(i).y2 - input_boxes.at(i).y1 + 1);
-    }
-    for (int i = 0; i < int(input_boxes.size()); ++i) {
-        for (int j = i + 1; j < int(input_boxes.size());) {
-            float xx1 = (std::max)(input_boxes[i].x1, input_boxes[j].x1);
-            float yy1 = (std::max)(input_boxes[i].y1, input_boxes[j].y1);
-            float xx2 = (std::min)(input_boxes[i].x2, input_boxes[j].x2);
-            float yy2 = (std::min)(input_boxes[i].y2, input_boxes[j].y2);
-            float w = (std::max)(float(0), xx2 - xx1 + 1);
-            float h = (std::max)(float(0), yy2 - yy1 + 1);
-            float inter = w * h;
-            float ovr = inter / (vArea[i] + vArea[j] - inter);
-            if (ovr >= nms_thresh) {
-                input_boxes.erase(input_boxes.begin() + j);
-                vArea.erase(vArea.begin() + j);
-            } else {
-                j++;
-            }
-        }
-    }
-}
-
 std::string replaceExtension(std::string input, std::string new_ext)
 {
     return input.substr(0, input.find_last_of('.')) + new_ext;
@@ -249,7 +165,7 @@ std::shared_ptr<DetOutput> NanoDetMNN::Detect(const cv::Mat &img)
             box.y2 = box.y2 / input_size[0] * image_h;
             m_result_list.push_back(box);
 
-            DetResult det_result{box.label, box.score, cv::Rect{(int)box.x1, (int)box.y1, (int)(box.x2 - box.x1), (int)(box.y2 - box.y1)}};
+            DetResult det_result{ box.label, box.score, cv::Rect2f{ cv::Point2f{ box.x1, box.y1 }, cv::Point2f{ box.x2, box.y2 } } };
             output->m_res.emplace_back(det_result);
         }
     }
@@ -265,4 +181,88 @@ std::shared_ptr<DetModel> NanoDetMNN::GetModel(const std::string &config_path)
         return std::shared_ptr<DetModel>(nullptr);
     }
     return model;
+}
+
+void NanoDetMNN::decode_infer(MNN::Tensor *pred, std::vector<CenterPrior> &center_priors, float threshold, std::vector<std::vector<BoxInfo>> &results)
+{
+    const int num_points = center_priors.size();
+    const int num_channels = num_class + (reg_max + 1) * 4;
+    // printf("num_points:%d\n", num_points);
+
+    // cv::Mat debug_heatmap = cv::Mat(feature_h, feature_w, CV_8UC3);
+    for (int idx = 0; idx < num_points; idx++) {
+        const int ct_x = center_priors[idx].x;
+        const int ct_y = center_priors[idx].y;
+        const int stride = center_priors[idx].stride;
+
+        // preds is a tensor with shape [num_points, num_channels]
+        const float *scores = pred->host<float>() + (idx * num_channels);
+
+        float score = 0;
+        int cur_label = 0;
+        for (int label = 0; label < num_class; label++) {
+            if (scores[label] > score) {
+                score = scores[label];
+                cur_label = label;
+            }
+        }
+        if (score > threshold) {
+            const float *bbox_pred = pred->host<float>() + idx * num_channels + num_class;
+            results[cur_label].push_back(disPred2Bbox(bbox_pred, cur_label, score, ct_x, ct_y, stride));
+        }
+    }
+}
+
+BoxInfo NanoDetMNN::disPred2Bbox(const float *&dfl_det, int label, float score, int x, int y, int stride)
+{
+    float ct_x = x * stride;
+    float ct_y = y * stride;
+    std::vector<float> dis_pred;
+    dis_pred.resize(4);
+    for (int i = 0; i < 4; i++) {
+        float dis = 0;
+        float *dis_after_sm = new float[reg_max + 1];
+        activation_function_softmax(dfl_det + i * (reg_max + 1), dis_after_sm, reg_max + 1);
+        for (int j = 0; j < reg_max + 1; j++) {
+            dis += j * dis_after_sm[j];
+        }
+        dis *= stride;
+        // std::cout << "dis:" << dis << std::endl;
+        dis_pred[i] = dis;
+        delete[] dis_after_sm;
+    }
+    float xmin = (std::max)(ct_x - dis_pred[0], .0f);
+    float ymin = (std::max)(ct_y - dis_pred[1], .0f);
+    float xmax = (std::min)(ct_x + dis_pred[2], (float)input_size[1]);
+    float ymax = (std::min)(ct_y + dis_pred[3], (float)input_size[0]);
+
+    // std::cout << xmin << "," << ymin << "," << xmax << "," << xmax << "," << std::endl;
+    return BoxInfo{ xmin, ymin, xmax, ymax, score, label };
+}
+
+void NanoDetMNN::nms(std::vector<BoxInfo> &input_boxes, float nms_thresh)
+{
+    std::sort(input_boxes.begin(), input_boxes.end(), [](BoxInfo a, BoxInfo b) { return a.score > b.score; });
+    std::vector<float> vArea(input_boxes.size());
+    for (int i = 0; i < int(input_boxes.size()); ++i) {
+        vArea[i] = (input_boxes.at(i).x2 - input_boxes.at(i).x1 + 1) * (input_boxes.at(i).y2 - input_boxes.at(i).y1 + 1);
+    }
+    for (int i = 0; i < int(input_boxes.size()); ++i) {
+        for (int j = i + 1; j < int(input_boxes.size());) {
+            float xx1 = (std::max)(input_boxes[i].x1, input_boxes[j].x1);
+            float yy1 = (std::max)(input_boxes[i].y1, input_boxes[j].y1);
+            float xx2 = (std::min)(input_boxes[i].x2, input_boxes[j].x2);
+            float yy2 = (std::min)(input_boxes[i].y2, input_boxes[j].y2);
+            float w = (std::max)(float(0), xx2 - xx1 + 1);
+            float h = (std::max)(float(0), yy2 - yy1 + 1);
+            float inter = w * h;
+            float ovr = inter / (vArea[i] + vArea[j] - inter);
+            if (ovr >= nms_thresh) {
+                input_boxes.erase(input_boxes.begin() + j);
+                vArea.erase(vArea.begin() + j);
+            } else {
+                j++;
+            }
+        }
+    }
 }

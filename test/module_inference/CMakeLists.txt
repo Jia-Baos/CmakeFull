@@ -21,7 +21,7 @@ else()
         message(STATUS "Could not find OpenCV library")
 endif()
 
-set(NCNN_DIR "/home/jia-baos/Project-Cpp/MNN/build/install")
+set(NCNN_DIR ${CMAKE_SOURCE_DIR}/3rdparty/MNN)
 
 # 链接库头文件路径
 target_include_directories(${PROJECT_NAME}

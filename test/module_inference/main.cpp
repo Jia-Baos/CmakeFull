@@ -1,4 +1,5 @@
 #include <iostream>
+#include <typeinfo>
 #include <opencv2/opencv.hpp>
 #include "model_base.hpp"
 #include "model_det.hpp"
@@ -236,13 +237,13 @@ void draw_bboxes(const cv::Mat& bgr, const std::vector<BoxInfo>& bboxes, object_
 int main()
 {
     std::cout << "=============================================================" << std::endl;
-    std::cout << "test DetModel inference api" << std::endl;
+    std::cout << "test DLModel inference api" << std::endl;
     std::cout << "=============================================================" << std::endl;
     
     // 获取模型
     std::string img_path = "/home/jia-baos/Project-Cpp/CmakeFull/imgs/000252.jpg";
     std::string config_path = "/home/jia-baos/Project-Cpp/CmakeFull/config/nanodet_mnn.yaml";
-    std::shared_ptr<DetModel> model = DetModel::GetModel(config_path);
+    std::shared_ptr<DLModel> model = DLModel::GetModel(config_path);
     if (!model)
     {
         return 0;
@@ -259,12 +260,17 @@ int main()
     const int width = model->GetInputWidth();
     const int height = model->GetInputHeight();
     resize_uniform(src, resized_img, cv::Size(width, height), effect_roi);
-    std::cout << "src size: " << src.size() << std::endl;
 
-    std::shared_ptr<DetOutput> out = model->Detect(resized_img);
+    std::shared_ptr<DLOutput> out = model->Infer(resized_img);
 
-    std::cout << out->m_type << std::endl;
-    std::cout << out->m_res.size() << std::endl;
+    // 需要根据任务类型手动转换到子类，否则无法获取结果
+    if (out->m_type == ModelType::kDetection) {
+        auto derivate_ptr = std::dynamic_pointer_cast<DetOutput>(out);
+        std::cout << ModelTypeToString(derivate_ptr->m_type) << std::endl;
+        std::cout << "res size: " << derivate_ptr->m_res.size() << std::endl;
+    }
+    else if (out->m_type == ModelType::kInstanceSegmentation) {
+    }
 
     std::vector<BoxInfo> results;
     auto derivate_ptr = std::dynamic_pointer_cast<NanoDetMNN>(model);
