@@ -71,3 +71,36 @@ private:
     const float mean_vals[3] = { 103.53f, 116.28f, 123.675f };
     const float norm_vals[3] = { 0.017429f, 0.017507f, 0.017125f };
 };
+
+inline float fast_exp(float x)
+{
+    union {
+        uint32_t i;
+        float f;
+    } v{};
+    v.i = (1 << 23) * (1.4426950409 * x + 126.93490512f);
+    return v.f;
+}
+
+inline float sigmoid(float x)
+{
+    return 1.0f / (1.0f + fast_exp(-x));
+}
+
+template <typename _Tp>
+inline int activation_function_softmax(const _Tp *src, _Tp *dst, int length)
+{
+    const _Tp alpha = *std::max_element(src, src + length);
+    _Tp denominator{ 0 };
+
+    for (int i = 0; i < length; ++i) {
+        dst[i] = fast_exp(src[i] - alpha);
+        denominator += dst[i];
+    }
+
+    for (int i = 0; i < length; ++i) {
+        dst[i] /= denominator;
+    }
+
+    return 0;
+}

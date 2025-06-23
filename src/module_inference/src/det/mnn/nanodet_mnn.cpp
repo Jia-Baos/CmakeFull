@@ -2,45 +2,17 @@
 #include <iostream>
 #include <chrono>
 
-float fast_exp(float x)
+std::string replaceExtension(std::string input, std::string new_ext)
 {
-    union {
-        uint32_t i;
-        float f;
-    } v{};
-    v.i = (1 << 23) * (1.4426950409 * x + 126.93490512f);
-    return v.f;
-}
-
-float sigmoid(float x)
-{
-    return 1.0f / (1.0f + fast_exp(-x));
-}
-
-template <typename _Tp>
-int activation_function_softmax(const _Tp *src, _Tp *dst, int length)
-{
-    const _Tp alpha = *std::max_element(src, src + length);
-    _Tp denominator{ 0 };
-
-    for (int i = 0; i < length; ++i) {
-        dst[i] = fast_exp(src[i] - alpha);
-        denominator += dst[i];
-    }
-
-    for (int i = 0; i < length; ++i) {
-        dst[i] /= denominator;
-    }
-
-    return 0;
+    return input.substr(0, input.find_last_of('.')) + new_ext;
 }
 
 void generate_grid_center_priors(const int input_height, const int input_width, std::vector<int> &strides, std::vector<CenterPrior> &center_priors)
 {
     for (int i = 0; i < (int)strides.size(); i++) {
         int stride = strides[i];
-        int feat_w = ceil((float)input_width / stride);
-        int feat_h = ceil((float)input_height / stride);
+        int feat_w = std::ceil((float)input_width / stride);
+        int feat_h = std::ceil((float)input_height / stride);
         for (int y = 0; y < feat_h; y++) {
             for (int x = 0; x < feat_w; x++) {
                 CenterPrior ct;
@@ -51,11 +23,6 @@ void generate_grid_center_priors(const int input_height, const int input_width, 
             }
         }
     }
-}
-
-std::string replaceExtension(std::string input, std::string new_ext)
-{
-    return input.substr(0, input.find_last_of('.')) + new_ext;
 }
 
 NanoDetMNN::NanoDetMNN(const std::string &config_path)
@@ -231,6 +198,8 @@ BoxInfo NanoDetMNN::disPred2Bbox(const float *&dfl_det, int label, float score, 
         dis_pred[i] = dis;
         delete[] dis_after_sm;
     }
+
+    // https://zhuanlan.zhihu.com/p/452602582
     float xmin = (std::max)(ct_x - dis_pred[0], .0f);
     float ymin = (std::max)(ct_y - dis_pred[1], .0f);
     float xmax = (std::min)(ct_x + dis_pred[2], (float)input_size[1]);
