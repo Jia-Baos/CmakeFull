@@ -91,8 +91,8 @@ std::shared_ptr<DetOutput> NanoDetMNN::Detect(const cv::Mat &img)
     auto image_w = img.cols;
 
     cv::Mat image;
-    const int kWidth = this->GetInputWidth();
-    const int kHeight = this->GetInputHeight();
+    const int kWidth = this->GetInputWidth();   // 320
+    const int kHeight = this->GetInputHeight(); // 244
     ResizeUniform(img, image, cv::Size(kWidth, kHeight), this->m_object_rect);
 
     cv::resize(image, image, cv::Size(input_size[1], input_size[0]));
@@ -128,7 +128,7 @@ std::shared_ptr<DetOutput> NanoDetMNN::Detect(const cv::Mat &img)
 
     // std::vector<BoxInfo> dets;
     for (int i = 0; i < (int)results.size(); i++) {
-        nms(results[i], m_nms_threshold);
+        nms(results[i], m_nms_threshold); // 416*416
 
         // 416*416 -> 320*244
         for (auto box : results[i]) {
