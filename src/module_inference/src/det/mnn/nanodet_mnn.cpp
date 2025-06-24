@@ -51,9 +51,9 @@ NanoDetMNN::NanoDetMNN(const std::string &config_path)
     MNN::ScheduleConfig config;
     config.numThread = m_thread_num;
 
-    MNN::BackendConfig backendConfig;
-    backendConfig.precision = (MNN::BackendConfig::PrecisionMode)2; // 显式类型转换
-    config.backendConfig = &backendConfig;
+    MNN::BackendConfig backend_config;
+    backend_config.precision = (MNN::BackendConfig::PrecisionMode)2; // 显式类型转换
+    config.backendConfig = &backend_config;
 
     NanoDet_session = NanoDet_interpreter->createSession(config);
 
@@ -91,9 +91,9 @@ std::shared_ptr<DetOutput> NanoDetMNN::Detect(const cv::Mat &img)
     auto image_w = img.cols;
 
     cv::Mat image;
-    const int width = this->GetInputWidth();
-    const int height = this->GetInputHeight();
-    ResizeUniform(img, image, cv::Size(width, height), this->m_object_rect);
+    const int kWidth = this->GetInputWidth();
+    const int kHeight = this->GetInputHeight();
+    ResizeUniform(img, image, cv::Size(kWidth, kHeight), this->m_object_rect);
 
     cv::resize(image, image, cv::Size(input_size[1], input_size[0]));
 
@@ -132,10 +132,10 @@ std::shared_ptr<DetOutput> NanoDetMNN::Detect(const cv::Mat &img)
 
         // 416*416 -> 320*244
         for (auto box : results[i]) {
-            box.x1 = box.x1 / input_size[1] * width;
-            box.x2 = box.x2 / input_size[1] * width;
-            box.y1 = box.y1 / input_size[0] * height;
-            box.y2 = box.y2 / input_size[0] * height;
+            box.x1 = box.x1 / input_size[1] * kWidth;
+            box.x2 = box.x2 / input_size[1] * kWidth;
+            box.y1 = box.y1 / input_size[0] * kHeight;
+            box.y2 = box.y2 / input_size[0] * kHeight;
             m_result_list.push_back(box);
 
             DetResult det_result{ box.label, box.score, cv::Rect2f{ cv::Point2f{ box.x1, box.y1 }, cv::Point2f{ box.x2, box.y2 } } };
@@ -158,18 +158,18 @@ std::shared_ptr<DetModel> NanoDetMNN::GetModel(const std::string &config_path)
 
 void NanoDetMNN::decode_infer(MNN::Tensor *pred, std::vector<CenterPrior> &center_priors, float threshold, std::vector<std::vector<BoxInfo>> &results)
 {
-    const int num_points = center_priors.size();
-    const int num_channels = num_class + (reg_max + 1) * 4;
+    const int kNumPoints = center_priors.size();
+    const int kNumChannels = num_class + (reg_max + 1) * 4;
     // printf("num_points:%d\n", num_points);
 
     // cv::Mat debug_heatmap = cv::Mat(feature_h, feature_w, CV_8UC3);
-    for (int idx = 0; idx < num_points; idx++) {
-        const int ct_x = center_priors[idx].x;
-        const int ct_y = center_priors[idx].y;
-        const int stride = center_priors[idx].stride;
+    for (int idx = 0; idx < kNumPoints; idx++) {
+        const int kCtX = center_priors[idx].x;
+        const int kCtY = center_priors[idx].y;
+        const int kStride = center_priors[idx].stride;
 
         // preds is a tensor with shape [num_points, num_channels]
-        const float *scores = pred->host<float>() + (idx * num_channels);
+        const float *scores = pred->host<float>() + (idx * kNumChannels);
 
         float score = 0;
         int cur_label = 0;
@@ -180,8 +180,8 @@ void NanoDetMNN::decode_infer(MNN::Tensor *pred, std::vector<CenterPrior> &cente
             }
         }
         if (score > threshold) {
-            const float *bbox_pred = pred->host<float>() + idx * num_channels + num_class;
-            results[cur_label].push_back(disPred2Bbox(bbox_pred, cur_label, score, ct_x, ct_y, stride));
+            const float *bbox_pred = pred->host<float>() + idx * kNumChannels + num_class;
+            results[cur_label].push_back(disPred2Bbox(bbox_pred, cur_label, score, kCtX, kCtY, kStride));
         }
     }
 }
@@ -218,9 +218,9 @@ BoxInfo NanoDetMNN::disPred2Bbox(const float *&dfl_det, int label, float score, 
 void NanoDetMNN::nms(std::vector<BoxInfo> &input_boxes, float nms_thresh)
 {
     std::sort(input_boxes.begin(), input_boxes.end(), [](BoxInfo a, BoxInfo b) { return a.score > b.score; });
-    std::vector<float> vArea(input_boxes.size());
+    std::vector<float> v_area(input_boxes.size());
     for (int i = 0; i < int(input_boxes.size()); ++i) {
-        vArea[i] = (input_boxes.at(i).x2 - input_boxes.at(i).x1 + 1) * (input_boxes.at(i).y2 - input_boxes.at(i).y1 + 1);
+        v_area[i] = (input_boxes.at(i).x2 - input_boxes.at(i).x1 + 1) * (input_boxes.at(i).y2 - input_boxes.at(i).y1 + 1);
     }
     for (int i = 0; i < int(input_boxes.size()); ++i) {
         for (int j = i + 1; j < int(input_boxes.size());) {
@@ -231,10 +231,10 @@ void NanoDetMNN::nms(std::vector<BoxInfo> &input_boxes, float nms_thresh)
             float w = (std::max)(float(0), xx2 - xx1 + 1);
             float h = (std::max)(float(0), yy2 - yy1 + 1);
             float inter = w * h;
-            float ovr = inter / (vArea[i] + vArea[j] - inter);
+            float ovr = inter / (v_area[i] + v_area[j] - inter);
             if (ovr >= nms_thresh) {
                 input_boxes.erase(input_boxes.begin() + j);
-                vArea.erase(vArea.begin() + j);
+                v_area.erase(v_area.begin() + j);
             } else {
                 j++;
             }
@@ -256,21 +256,21 @@ cv::Mat DrawBoxes(const cv::Mat &img, const std::vector<BoxInfo> &bboxes, Object
 
     for (size_t i = 0; i < bboxes.size(); i++) {
         const BoxInfo &bbox = bboxes[i];
-        cv::Scalar color = cv::Scalar(color_list[bbox.label][0], color_list[bbox.label][1], color_list[bbox.label][2]);
+        cv::Scalar color = cv::Scalar(kColorList[bbox.label][0], kColorList[bbox.label][1], kColorList[bbox.label][2]);
 
         cv::rectangle(res_img, cv::Rect(cv::Point((bbox.x1 - effect_roi.x) * width_ratio, (bbox.y1 - effect_roi.y) * height_ratio), cv::Point((bbox.x2 - effect_roi.x) * width_ratio, (bbox.y2 - effect_roi.y) * height_ratio)), color);
 
         // char text[256];
         // sprintf(text, "%s %.1f%%", class_name[bbox.label], bbox.score * 100);
 
-        std::string text = class_name[bbox.label] + " " + std::to_string(bbox.score);
-        std::cout << "class name: " << class_name[bbox.label] << ", score: " << bbox.score << std::endl;
+        std::string text = kClassName[bbox.label] + " " + std::to_string(bbox.score);
+        std::cout << "class name: " << kClassName[bbox.label] << ", score: " << bbox.score << std::endl;
 
-        int baseLine = 0;
-        cv::Size label_size = cv::getTextSize(text, cv::FONT_HERSHEY_SIMPLEX, 0.4, 1, &baseLine);
+        int base_line = 0;
+        cv::Size label_size = cv::getTextSize(text, cv::FONT_HERSHEY_SIMPLEX, 0.4, 1, &base_line);
 
         int x = (bbox.x1 - effect_roi.x) * width_ratio;
-        int y = (bbox.y1 - effect_roi.y) * height_ratio - label_size.height - baseLine;
+        int y = (bbox.y1 - effect_roi.y) * height_ratio - label_size.height - base_line;
         if (y < 0) {
             y = 0;
         }
@@ -279,7 +279,7 @@ cv::Mat DrawBoxes(const cv::Mat &img, const std::vector<BoxInfo> &bboxes, Object
             x = res_img.cols - label_size.width;
         }
 
-        cv::rectangle(res_img, cv::Rect(cv::Point(x, y), cv::Size(label_size.width, label_size.height + baseLine)), color, -1);
+        cv::rectangle(res_img, cv::Rect(cv::Point(x, y), cv::Size(label_size.width, label_size.height + base_line)), color, -1);
         cv::putText(res_img, text, cv::Point(x, y + label_size.height), cv::FONT_HERSHEY_SIMPLEX, 0.4, cv::Scalar(255, 255, 255));
     }
 

@@ -7,33 +7,32 @@
 #include "Tensor.hpp"
 #include "ImageProcess.hpp"
 #include <opencv2/opencv.hpp>
+
 #include <algorithm>
-#include <iostream>
 #include <string>
 #include <vector>
 #include <memory>
-#include <chrono>
 
-typedef struct HeadInfo_ {
+struct HeadInfo {
     std::string cls_layer;
     std::string dis_layer;
     int stride;
-} HeadInfo;
+};
 
-typedef struct BoxInfo_ {
+struct BoxInfo {
     float x1;
     float y1;
     float x2;
     float y2;
     float score;
     int label;
-} BoxInfo;
+};
 
-typedef struct CenterPrior_ {
+struct CenterPrior {
     int x;
     int y;
     int stride;
-} CenterPrior;
+};
 
 class NanoDetMNN : public DetModel {
 public:
@@ -105,4 +104,4 @@ inline int activation_function_softmax(const _Tp *src, _Tp *dst, int length)
     return 0;
 }
 
-cv::Mat DrawBoxes(const cv::Mat& img, const std::vector<BoxInfo>& bboxes, ObjectRect effect_roi);
+cv::Mat DrawBoxes(const cv::Mat &img, const std::vector<BoxInfo> &bboxes, ObjectRect effect_roi);
