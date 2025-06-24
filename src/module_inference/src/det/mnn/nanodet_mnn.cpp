@@ -89,8 +89,13 @@ std::shared_ptr<DetOutput> NanoDetMNN::Detect(const cv::Mat &img)
 
     auto image_h = img.rows;
     auto image_w = img.cols;
+
     cv::Mat image;
-    cv::resize(img, image, cv::Size(input_size[1], input_size[0]));
+    const int width = this->GetInputWidth();
+    const int height = this->GetInputHeight();
+    ResizeUniform(img, image, cv::Size(width, height), this->m_object_rect);
+
+    cv::resize(image, image, cv::Size(input_size[1], input_size[0]));
 
     NanoDet_interpreter->resizeTensor(input_tensor, { 1, 3, input_size[0], input_size[1] });
     NanoDet_interpreter->resizeSession(NanoDet_session);
@@ -125,11 +130,12 @@ std::shared_ptr<DetOutput> NanoDetMNN::Detect(const cv::Mat &img)
     for (int i = 0; i < (int)results.size(); i++) {
         nms(results[i], m_nms_threshold);
 
+        // 416*416 -> 320*244
         for (auto box : results[i]) {
-            box.x1 = box.x1 / input_size[1] * image_w;
-            box.x2 = box.x2 / input_size[1] * image_w;
-            box.y1 = box.y1 / input_size[0] * image_h;
-            box.y2 = box.y2 / input_size[0] * image_h;
+            box.x1 = box.x1 / input_size[1] * width;
+            box.x2 = box.x2 / input_size[1] * width;
+            box.y1 = box.y1 / input_size[0] * height;
+            box.y2 = box.y2 / input_size[0] * height;
             m_result_list.push_back(box);
 
             DetResult det_result{ box.label, box.score, cv::Rect2f{ cv::Point2f{ box.x1, box.y1 }, cv::Point2f{ box.x2, box.y2 } } };
@@ -234,4 +240,48 @@ void NanoDetMNN::nms(std::vector<BoxInfo> &input_boxes, float nms_thresh)
             }
         }
     }
+}
+
+cv::Mat DrawBoxes(const cv::Mat &img, const std::vector<BoxInfo> &bboxes, ObjectRect effect_roi)
+{
+    cv::Mat res_img = img.clone();
+
+    int src_w = res_img.cols;
+    int src_h = res_img.rows;
+    int dst_w = effect_roi.width;
+    int dst_h = effect_roi.height;
+
+    float width_ratio = (float)src_w / (float)dst_w;
+    float height_ratio = (float)src_h / (float)dst_h;
+
+    for (size_t i = 0; i < bboxes.size(); i++) {
+        const BoxInfo &bbox = bboxes[i];
+        cv::Scalar color = cv::Scalar(color_list[bbox.label][0], color_list[bbox.label][1], color_list[bbox.label][2]);
+
+        cv::rectangle(res_img, cv::Rect(cv::Point((bbox.x1 - effect_roi.x) * width_ratio, (bbox.y1 - effect_roi.y) * height_ratio), cv::Point((bbox.x2 - effect_roi.x) * width_ratio, (bbox.y2 - effect_roi.y) * height_ratio)), color);
+
+        // char text[256];
+        // sprintf(text, "%s %.1f%%", class_name[bbox.label], bbox.score * 100);
+
+        std::string text = class_name[bbox.label] + " " + std::to_string(bbox.score);
+        std::cout << "class name: " << class_name[bbox.label] << ", score: " << bbox.score << std::endl;
+
+        int baseLine = 0;
+        cv::Size label_size = cv::getTextSize(text, cv::FONT_HERSHEY_SIMPLEX, 0.4, 1, &baseLine);
+
+        int x = (bbox.x1 - effect_roi.x) * width_ratio;
+        int y = (bbox.y1 - effect_roi.y) * height_ratio - label_size.height - baseLine;
+        if (y < 0) {
+            y = 0;
+        }
+
+        if (x + label_size.width > res_img.cols) {
+            x = res_img.cols - label_size.width;
+        }
+
+        cv::rectangle(res_img, cv::Rect(cv::Point(x, y), cv::Size(label_size.width, label_size.height + baseLine)), color, -1);
+        cv::putText(res_img, text, cv::Point(x, y + label_size.height), cv::FONT_HERSHEY_SIMPLEX, 0.4, cv::Scalar(255, 255, 255));
+    }
+
+    return res_img;
 }

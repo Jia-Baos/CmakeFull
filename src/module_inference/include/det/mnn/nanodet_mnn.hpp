@@ -104,3 +104,5 @@ inline int activation_function_softmax(const _Tp *src, _Tp *dst, int length)
 
     return 0;
 }
+
+cv::Mat DrawBoxes(const cv::Mat& img, const std::vector<BoxInfo>& bboxes, ObjectRect effect_roi);

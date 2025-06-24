@@ -19,7 +19,9 @@ inline std::string ModelTypeToString(ModelType type) {
         default: return "Unknown";
     }
 }
-
+/**
+ *   通过函数指针返回具体任务实例
+ */
 struct ModelSpec {
     std::string model_name;
     std::string framework_name;
@@ -35,9 +37,6 @@ struct ModelSpec {
     }
 };
 
-/**
- * 所有结果继承此基类
- */
 class DLOutput {
 public:
     DLOutput(ModelType type) : m_type(type) {}
@@ -45,9 +44,6 @@ public:
     ModelType m_type;
 };
 
-/**
- * 所有任务继承此基类
- */
 class DLModel {
 public:
     virtual std::shared_ptr<DLOutput> Infer(const cv::Mat &img) = 0;
@@ -62,8 +58,8 @@ protected:
     DLModel(ModelType model_type) : m_type(model_type), m_valid(true) {}
     virtual ~DLModel() {};
 
-    ModelType m_type;   // 模型类型
-    bool m_valid;       // 模型是否有效
-    int m_input_width;  // 模型输入宽度
-    int m_input_height; // 模型输入高度
+    ModelType m_type{};   // 模型类型
+    bool m_valid{};       // 模型是否有效
+    int m_input_width{};  // 模型输入宽度
+    int m_input_height{}; // 模型输入高度
 };
