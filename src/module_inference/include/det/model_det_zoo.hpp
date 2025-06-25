@@ -4,14 +4,6 @@
 
 #include "../model_det.hpp"
 
-#ifdef USE_MNN
-#include "mnn/nanodet_mnn.hpp"
-#endif
-
-#ifdef USE_NCNN
-#include "ncnn/nanodet_ncnn.hpp"
-#endif
-
 using GetDetModelFunc = std::shared_ptr<DetModel>(*)(const std::string&);
 
 /**

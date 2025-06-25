@@ -2,12 +2,12 @@
 #include <iostream>
 #include <chrono>
 
-std::string replaceExtension(std::string input, std::string new_ext)
+inline std::string replaceExtension(std::string input, std::string new_ext)
 {
     return input.substr(0, input.find_last_of('.')) + new_ext;
 }
 
-void generate_grid_center_priors(const int input_height, const int input_width, std::vector<int> &strides, std::vector<CenterPrior> &center_priors)
+inline void generate_grid_center_priors(const int input_height, const int input_width, std::vector<int> &strides, std::vector<NanoDet::CenterPrior> &center_priors)
 {
     for (int i = 0; i < (int)strides.size(); i++) {
         int stride = strides[i];
@@ -15,7 +15,7 @@ void generate_grid_center_priors(const int input_height, const int input_width, 
         int feat_h = std::ceil((float)input_height / stride);
         for (int y = 0; y < feat_h; y++) {
             for (int x = 0; x < feat_w; x++) {
-                CenterPrior ct;
+                NanoDet::CenterPrior ct;
                 ct.x = x;
                 ct.y = y;
                 ct.stride = stride;
@@ -23,6 +23,83 @@ void generate_grid_center_priors(const int input_height, const int input_width, 
             }
         }
     }
+}
+
+inline float fast_exp(float x)
+{
+    union {
+        uint32_t i;
+        float f;
+    } v{};
+    v.i = (1 << 23) * (1.4426950409 * x + 126.93490512f);
+    return v.f;
+}
+
+inline float sigmoid(float x)
+{
+    return 1.0f / (1.0f + fast_exp(-x));
+}
+
+template <typename _Tp>
+inline int activation_function_softmax(const _Tp *src, _Tp *dst, int length)
+{
+    const _Tp alpha = *std::max_element(src, src + length);
+    _Tp denominator{ 0 };
+
+    for (int i = 0; i < length; ++i) {
+        dst[i] = fast_exp(src[i] - alpha);
+        denominator += dst[i];
+    }
+
+    for (int i = 0; i < length; ++i) {
+        dst[i] /= denominator;
+    }
+
+    return 0;
+}
+
+static cv::Mat DrawBoxes(const cv::Mat &img, const std::vector<NanoDet::BoxInfo> &bboxes, ObjectRect effect_roi)
+{
+    cv::Mat res_img = img.clone();
+
+    int src_w = res_img.cols;
+    int src_h = res_img.rows;
+    int dst_w = effect_roi.width;
+    int dst_h = effect_roi.height;
+
+    float width_ratio = (float)src_w / (float)dst_w;
+    float height_ratio = (float)src_h / (float)dst_h;
+
+    for (size_t i = 0; i < bboxes.size(); i++) {
+        const NanoDet::BoxInfo &bbox = bboxes[i];
+        cv::Scalar color = cv::Scalar(kColorList[bbox.label][0], kColorList[bbox.label][1], kColorList[bbox.label][2]);
+
+        cv::rectangle(res_img, cv::Rect(cv::Point((bbox.x1 - effect_roi.x) * width_ratio, (bbox.y1 - effect_roi.y) * height_ratio), cv::Point((bbox.x2 - effect_roi.x) * width_ratio, (bbox.y2 - effect_roi.y) * height_ratio)), color);
+
+        // char text[256];
+        // sprintf(text, "%s %.1f%%", class_name[bbox.label], bbox.score * 100);
+
+        std::string text = kClassName[bbox.label] + " " + std::to_string(bbox.score);
+        std::cout << "class name: " << kClassName[bbox.label] << ", score: " << bbox.score << std::endl;
+
+        int base_line = 0;
+        cv::Size label_size = cv::getTextSize(text, cv::FONT_HERSHEY_SIMPLEX, 0.4, 1, &base_line);
+
+        int x = (bbox.x1 - effect_roi.x) * width_ratio;
+        int y = (bbox.y1 - effect_roi.y) * height_ratio - label_size.height - base_line;
+        if (y < 0) {
+            y = 0;
+        }
+
+        if (x + label_size.width > res_img.cols) {
+            x = res_img.cols - label_size.width;
+        }
+
+        cv::rectangle(res_img, cv::Rect(cv::Point(x, y), cv::Size(label_size.width, label_size.height + base_line)), color, -1);
+        cv::putText(res_img, text, cv::Point(x, y + label_size.height), cv::FONT_HERSHEY_SIMPLEX, 0.4, cv::Scalar(255, 255, 255));
+    }
+
+    return res_img;
 }
 
 NanoDetMNN::NanoDetMNN(const std::string &config_path)
@@ -87,20 +164,16 @@ std::shared_ptr<DetOutput> NanoDetMNN::Detect(const cv::Mat &img)
         return output;
     }
 
-    auto image_h = img.rows;
-    auto image_w = img.cols;
-
     cv::Mat image;
-    const int kWidth = this->GetInputWidth();   // 320
-    const int kHeight = this->GetInputHeight(); // 244
-    ResizeUniform(img, image, cv::Size(kWidth, kHeight), this->m_object_rect);
+    const int kWidth = this->GetInputWidth();
+    const int kHeight = this->GetInputHeight();
+    ResizeUniform(img, image, cv::Size(kWidth, kHeight), this->m_object_rect); // -> 416*416
+    std::cout << "ResizeUniform(), src size: " << image.size() << std::endl;
 
-    cv::resize(image, image, cv::Size(input_size[1], input_size[0]));
-
-    NanoDet_interpreter->resizeTensor(input_tensor, { 1, 3, input_size[0], input_size[1] });
+    NanoDet_interpreter->resizeTensor(input_tensor, { 1, 3, this->m_input_height, this->m_input_width });
     NanoDet_interpreter->resizeSession(NanoDet_session);
     std::shared_ptr<MNN::CV::ImageProcess> pretreat(MNN::CV::ImageProcess::create(MNN::CV::BGR, MNN::CV::BGR, mean_vals, 3, norm_vals, 3));
-    pretreat->convert(image.data, input_size[1], input_size[0], image.step[0], input_tensor);
+    pretreat->convert(image.data, this->m_input_width, this->m_input_height, image.step[0], input_tensor);
 
     auto start = std::chrono::steady_clock::now();
 
@@ -108,7 +181,7 @@ std::shared_ptr<DetOutput> NanoDetMNN::Detect(const cv::Mat &img)
     NanoDet_interpreter->runSession(NanoDet_session);
 
     // get output data
-    std::vector<std::vector<BoxInfo>> results;
+    std::vector<std::vector<NanoDet::BoxInfo>> results;
     results.resize(num_class);
 
     MNN::Tensor *tensor_preds = NanoDet_interpreter->getSessionOutput(NanoDet_session, output_name.c_str());
@@ -117,8 +190,8 @@ std::shared_ptr<DetOutput> NanoDetMNN::Detect(const cv::Mat &img)
     tensor_preds->copyToHostTensor(&tensor_preds_host);
 
     // generate center priors in format of (x, y, stride)
-    std::vector<CenterPrior> center_priors;
-    generate_grid_center_priors(this->input_size[0], this->input_size[1], this->strides, center_priors);
+    std::vector<NanoDet::CenterPrior> center_priors;
+    generate_grid_center_priors(this->m_input_height, this->m_input_width, this->strides, center_priors);
 
     decode_infer(&tensor_preds_host, center_priors, m_confidence_threshold, results);
 
@@ -128,14 +201,9 @@ std::shared_ptr<DetOutput> NanoDetMNN::Detect(const cv::Mat &img)
 
     // std::vector<BoxInfo> dets;
     for (int i = 0; i < (int)results.size(); i++) {
-        nms(results[i], m_nms_threshold); // 416*416
+        nms(results[i], m_nms_threshold);
 
-        // 416*416 -> 320*244
         for (auto box : results[i]) {
-            box.x1 = box.x1 / input_size[1] * kWidth;
-            box.x2 = box.x2 / input_size[1] * kWidth;
-            box.y1 = box.y1 / input_size[0] * kHeight;
-            box.y2 = box.y2 / input_size[0] * kHeight;
             m_result_list.push_back(box);
 
             DetResult det_result{ box.label, box.score, cv::Rect2f{ cv::Point2f{ box.x1, box.y1 }, cv::Point2f{ box.x2, box.y2 } } };
@@ -156,7 +224,7 @@ std::shared_ptr<DetModel> NanoDetMNN::GetModel(const std::string &config_path)
     return model;
 }
 
-void NanoDetMNN::decode_infer(MNN::Tensor *pred, std::vector<CenterPrior> &center_priors, float threshold, std::vector<std::vector<BoxInfo>> &results)
+void NanoDetMNN::decode_infer(MNN::Tensor *pred, std::vector<NanoDet::CenterPrior> &center_priors, float threshold, std::vector<std::vector<NanoDet::BoxInfo>> &results)
 {
     const int kNumPoints = center_priors.size();
     const int kNumChannels = num_class + (reg_max + 1) * 4;
@@ -186,7 +254,7 @@ void NanoDetMNN::decode_infer(MNN::Tensor *pred, std::vector<CenterPrior> &cente
     }
 }
 
-BoxInfo NanoDetMNN::disPred2Bbox(const float *&dfl_det, int label, float score, int x, int y, int stride)
+NanoDet::BoxInfo NanoDetMNN::disPred2Bbox(const float *&dfl_det, int label, float score, int x, int y, int stride)
 {
     float ct_x = x * stride;
     float ct_y = y * stride;
@@ -208,16 +276,16 @@ BoxInfo NanoDetMNN::disPred2Bbox(const float *&dfl_det, int label, float score, 
     // https://zhuanlan.zhihu.com/p/452602582
     float xmin = (std::max)(ct_x - dis_pred[0], .0f);
     float ymin = (std::max)(ct_y - dis_pred[1], .0f);
-    float xmax = (std::min)(ct_x + dis_pred[2], (float)input_size[1]);
-    float ymax = (std::min)(ct_y + dis_pred[3], (float)input_size[0]);
+    float xmax = (std::min)(ct_x + dis_pred[2], (float)this->m_input_width);
+    float ymax = (std::min)(ct_y + dis_pred[3], (float)this->m_input_height);
 
     // std::cout << xmin << "," << ymin << "," << xmax << "," << xmax << "," << std::endl;
-    return BoxInfo{ xmin, ymin, xmax, ymax, score, label };
+    return NanoDet::BoxInfo{ xmin, ymin, xmax, ymax, score, label };
 }
 
-void NanoDetMNN::nms(std::vector<BoxInfo> &input_boxes, float nms_thresh)
+void NanoDetMNN::nms(std::vector<NanoDet::BoxInfo> &input_boxes, float nms_thresh)
 {
-    std::sort(input_boxes.begin(), input_boxes.end(), [](BoxInfo a, BoxInfo b) { return a.score > b.score; });
+    std::sort(input_boxes.begin(), input_boxes.end(), [](NanoDet::BoxInfo a, NanoDet::BoxInfo b) { return a.score > b.score; });
     std::vector<float> v_area(input_boxes.size());
     for (int i = 0; i < int(input_boxes.size()); ++i) {
         v_area[i] = (input_boxes.at(i).x2 - input_boxes.at(i).x1 + 1) * (input_boxes.at(i).y2 - input_boxes.at(i).y1 + 1);
@@ -240,48 +308,4 @@ void NanoDetMNN::nms(std::vector<BoxInfo> &input_boxes, float nms_thresh)
             }
         }
     }
-}
-
-cv::Mat DrawBoxes(const cv::Mat &img, const std::vector<BoxInfo> &bboxes, ObjectRect effect_roi)
-{
-    cv::Mat res_img = img.clone();
-
-    int src_w = res_img.cols;
-    int src_h = res_img.rows;
-    int dst_w = effect_roi.width;
-    int dst_h = effect_roi.height;
-
-    float width_ratio = (float)src_w / (float)dst_w;
-    float height_ratio = (float)src_h / (float)dst_h;
-
-    for (size_t i = 0; i < bboxes.size(); i++) {
-        const BoxInfo &bbox = bboxes[i];
-        cv::Scalar color = cv::Scalar(kColorList[bbox.label][0], kColorList[bbox.label][1], kColorList[bbox.label][2]);
-
-        cv::rectangle(res_img, cv::Rect(cv::Point((bbox.x1 - effect_roi.x) * width_ratio, (bbox.y1 - effect_roi.y) * height_ratio), cv::Point((bbox.x2 - effect_roi.x) * width_ratio, (bbox.y2 - effect_roi.y) * height_ratio)), color);
-
-        // char text[256];
-        // sprintf(text, "%s %.1f%%", class_name[bbox.label], bbox.score * 100);
-
-        std::string text = kClassName[bbox.label] + " " + std::to_string(bbox.score);
-        std::cout << "class name: " << kClassName[bbox.label] << ", score: " << bbox.score << std::endl;
-
-        int base_line = 0;
-        cv::Size label_size = cv::getTextSize(text, cv::FONT_HERSHEY_SIMPLEX, 0.4, 1, &base_line);
-
-        int x = (bbox.x1 - effect_roi.x) * width_ratio;
-        int y = (bbox.y1 - effect_roi.y) * height_ratio - label_size.height - base_line;
-        if (y < 0) {
-            y = 0;
-        }
-
-        if (x + label_size.width > res_img.cols) {
-            x = res_img.cols - label_size.width;
-        }
-
-        cv::rectangle(res_img, cv::Rect(cv::Point(x, y), cv::Size(label_size.width, label_size.height + base_line)), color, -1);
-        cv::putText(res_img, text, cv::Point(x, y + label_size.height), cv::FONT_HERSHEY_SIMPLEX, 0.4, cv::Scalar(255, 255, 255));
-    }
-
-    return res_img;
 }

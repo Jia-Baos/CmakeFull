@@ -2,6 +2,30 @@
 
 #include "./model_base.hpp"
 
+namespace NanoDet
+{
+struct HeadInfo {
+    std::string cls_layer;
+    std::string dis_layer;
+    int stride;
+};
+
+struct BoxInfo {
+    float x1;
+    float y1;
+    float x2;
+    float y2;
+    float score;
+    int label;
+};
+
+struct CenterPrior {
+    int x;
+    int y;
+    int stride;
+};
+}; // namespace NanoDet
+
 struct ObjectRect {
     int x;      // 原图按比例 resize 后拷贝到模型输入尺寸图像的起始像素点的x坐标（向右）
     int y;      // 原图按比例 resize 后拷贝到模型输入尺寸图像的起始像素点的y坐标（向下）

@@ -3,7 +3,7 @@
 # base info
 task: det
 model: nanodet
-framework: mnn
+framework: ncnn
 
 # detection model params
 input_width: 416

@@ -1,5 +1,13 @@
 #include "../../include/det/model_det_zoo.hpp"
 
+#ifdef USE_MNN
+#include "../../include/det/mnn/nanodet_mnn.hpp"
+#endif
+
+#ifdef USE_NCNN
+#include "../../include/det/ncnn/nanodet_ncnn.hpp"
+#endif
+
 std::map<ModelSpec, GetDetModelFunc> det_model_zoo = {
 #ifdef USE_MNN
     { ModelSpec{"nanodet", "mnn"}, &NanoDetMNN::GetModel },

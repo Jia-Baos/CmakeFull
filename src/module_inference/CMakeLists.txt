@@ -27,7 +27,7 @@ if(ENABLE_MNN)
     file(GLOB FILES_SRC_DET_MNN ${CMAKE_CURRENT_SOURCE_DIR}/src/det/mnn/*.cpp)
     file(GLOB FILES_HEADERS_DET_MNN ${CMAKE_CURRENT_SOURCE_DIR}/include/det/mnn/*.h ${CMAKE_CURRENT_SOURCE_DIR}/include/det/mnn/*.hpp)
 
-    set(NCNN_DIR ${CMAKE_SOURCE_DIR}/3rdparty/MNN)
+    set(MNN_DIR ${CMAKE_SOURCE_DIR}/3rdparty/MNN)
 endif()
 
 if (ENABLE_NCNN)
@@ -35,6 +35,15 @@ if (ENABLE_NCNN)
     add_compile_definitions(USE_NCNN)
     file(GLOB FILES_SRC_DET_NCNN ${CMAKE_CURRENT_SOURCE_DIR}/src/det/ncnn/*.cpp)
     file(GLOB FILES_HEADERS_DET_NCNN ${CMAKE_CURRENT_SOURCE_DIR}/include/det/ncnn/*.h ${CMAKE_CURRENT_SOURCE_DIR}/include/det/ncnn/*.hpp)
+
+    set(ncnn_DIR ${CMAKE_SOURCE_DIR}/3rdparty/NCNN/lib/cmake/ncnn)
+    
+    find_package(ncnn REQUIRED)
+        if(NOT TARGET ncnn)
+        message(WARNING "ncnn NOT FOUND!  Please set ncnn_DIR environment variable")
+        else()
+        message("ncnn FOUND ")
+        endif()
 endif()
 
 set(FILES_SRC ${FILES_SRC_BASE} ${FILES_SRC_DET_MNN} ${FILES_SRC_DET_NCNN})
@@ -61,19 +70,20 @@ target_include_directories(${PROJECT_NAME}
         ${CMAKE_CURRENT_SOURCE_DIR}/include
         ${CMAKE_CURRENT_SOURCE_DIR}/include/det
         ${CMAKE_CURRENT_SOURCE_DIR}/include/det/mnn
-        ${NCNN_DIR}/include/MNN
+        ${MNN_DIR}/include/MNN
         )
 
 # 链接库文件夹，如果动态链接库和静态链接库同名，优先调用静态链接库
 target_link_directories(${PROJECT_NAME}
         PRIVATE
-        ${NCNN_DIR}/lib
+        ${MNN_DIR}/lib
         )
 
 target_link_libraries(${PROJECT_NAME}
         PRIVATE
         ${OpenCV_LIBS}
-        MNN)
+        MNN
+        ncnn)
 
 install(TARGETS ${PROJECT_NAME}
         ARCHIVE DESTINATION lib
