@@ -120,7 +120,7 @@ NanoDetNCNN::NanoDetNCNN(const std::string &config_path)
     std::string ncnn_bin_path = replaceExtension(config_path, ".bin");
     std::string ncnn_param_path = replaceExtension(config_path, ".param");
 
-    this->Net = new ncnn::Net();
+    this->Net = std::make_shared<ncnn::Net>();
 
     // opt
 #if NCNN_VULKAN
@@ -154,7 +154,6 @@ NanoDetNCNN::NanoDetNCNN(const std::string &config_path)
 
 NanoDetNCNN::~NanoDetNCNN()
 {
-    delete this->Net;
 }
 
 std::shared_ptr<DetOutput> NanoDetNCNN::Detect(const cv::Mat &img)

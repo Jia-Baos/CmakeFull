@@ -29,7 +29,7 @@ public:
     std::vector<NanoDet::BoxInfo> m_result_list;
 
 private:
-    ncnn::Net *Net;
+    std::shared_ptr<ncnn::Net> Net;
 
     int m_thread_num;
     int m_class_num;
