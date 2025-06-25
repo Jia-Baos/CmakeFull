@@ -39,11 +39,11 @@ if (ENABLE_NCNN)
     set(ncnn_DIR ${CMAKE_SOURCE_DIR}/3rdparty/NCNN/lib/cmake/ncnn)
     
     find_package(ncnn REQUIRED)
-        if(NOT TARGET ncnn)
+    if(NOT TARGET ncnn)
         message(WARNING "ncnn NOT FOUND!  Please set ncnn_DIR environment variable")
-        else()
+    else()
         message("ncnn FOUND ")
-        endif()
+    endif()
 endif()
 
 set(FILES_SRC ${FILES_SRC_BASE} ${FILES_SRC_DET_MNN} ${FILES_SRC_DET_NCNN})
@@ -70,6 +70,7 @@ target_include_directories(${PROJECT_NAME}
         ${CMAKE_CURRENT_SOURCE_DIR}/include
         ${CMAKE_CURRENT_SOURCE_DIR}/include/det
         ${CMAKE_CURRENT_SOURCE_DIR}/include/det/mnn
+        ${CMAKE_CURRENT_SOURCE_DIR}/include/det/ncnn
         ${MNN_DIR}/include/MNN
         )
 

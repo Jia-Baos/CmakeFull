@@ -22,7 +22,9 @@ else()
 endif()
 
 set(ncnn_DIR ${CMAKE_SOURCE_DIR}/3rdparty/NCNN/lib/cmake/ncnn)
+
 find_package(ncnn REQUIRED)
+
 if(NOT TARGET ncnn)
         message(WARNING "ncnn NOT FOUND!  Please set ncnn_DIR environment variable")
 else()
