@@ -24,9 +24,9 @@ using READ_LOCK = std::shared_lock<::std::shared_mutex>;
 #endif
 } // namespace cgu
 
-struct FrameData {
-    uint64_t time_stamp{ 0 };
-    cv::Mat img_rgb{ cv::Mat() };
+struct DataFrame {
+    cv::Mat img;
+    uint64_t timestamp;
 };
 
 class CameraBase {
@@ -55,7 +55,7 @@ public:
 public:
     std::string m_ip{};                     // 网口相机 IP
     std::string m_sn{};                     // USB相机序列号
-    FrameData m_frame_data;                 // 帧数据
+    DataFrame m_data_frame;                 // 帧数据
     std::shared_mutex m_frame_mutex;        // 帧数据互斥锁
     std::atomic<bool> m_stop_flag{ false }; // 相机禁用 flag
 };

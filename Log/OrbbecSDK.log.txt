@@ -1,0 +1,437 @@
+[06/27 20:15:46.175698][debug][5834][Context.cpp:30] Context creating, work_dir=/home/jia-baos/Project-Cpp/CmakeFull
+[06/27 20:15:46.176022][debug][5834][Context.cpp:49] Config file version=1.1
+[06/27 20:15:46.187334][debug][5834][FrameBufferManager.cpp:23] Max global frame buffer size updated! size=2048.000MB
+[06/27 20:15:46.187471][info][5834][Context.cpp:68] Context created with config: default config!
+[06/27 20:15:46.187610][info][5834][Context.cpp:73] Work directory=/home/jia-baos/Project-Cpp/CmakeFull, SDK version=v1.10.18-20250103-27bf2f6
+[06/27 20:15:46.187704][debug][5834][DeviceManager.cpp:30] DeviceManager init ...
+[06/27 20:15:46.187723][info][5834][LinuxPal.cpp:32] createObPal: create LinuxPal!
+[06/27 20:15:46.189217][debug][5834][DeviceManager.cpp:34] Enable USB Device Enumerator ...
+[06/27 20:15:46.189368][debug][5834][EnumeratorLibusb.cpp:324] queryDevicesInfo done!
+[06/27 20:15:46.189397][debug][5834][UsbDeviceEnumerator.cpp:163] Current usb device port list:
+[06/27 20:15:46.189405][debug][5834][UsbDeviceEnumerator.cpp:166]  - 1-1-6.0 | 
+[06/27 20:15:46.189429][warning][5834][OpenNIDeviceInfo.cpp:122] New openni device matched.
+[06/27 20:15:46.189739][info][5834][LinuxPal.cpp:166] Create PollingDeviceWatcher!
+[06/27 20:15:46.189786][debug][5834][UsbDeviceEnumerator.cpp:71] Found 1 device(s):
+[06/27 20:15:46.189796][debug][5834][UsbDeviceEnumerator.cpp:74]   - Name: Astra Mini Pro, PID: 0x065B, SN/ID: , connection: USB2.0
+[06/27 20:15:46.189805][info][5834][DeviceManager.cpp:15] Current found device(s): (1)
+[06/27 20:15:46.189820][info][5834][DeviceManager.cpp:24] 	- Name: Astra Mini Pro, PID: 0x065b, SN/ID: , Connection: USB2.0
+[06/27 20:15:46.189832][debug][5834][DeviceManager.cpp:52] DeviceManager construct done!
+[06/27 20:15:46.222846][debug][5834][FrameProcessingBlock.cpp:26] Block created with frame queue size: 10
+[06/27 20:19:35.829820][debug][6301][Context.cpp:30] Context creating, work_dir=/home/jia-baos/Project-Cpp/CmakeFull
+[06/27 20:19:35.829932][debug][6301][Context.cpp:49] Config file version=1.1
+[06/27 20:19:35.829959][debug][6301][FrameBufferManager.cpp:23] Max global frame buffer size updated! size=2048.000MB
+[06/27 20:19:35.829971][info][6301][Context.cpp:68] Context created with config: default config!
+[06/27 20:19:35.830000][info][6301][Context.cpp:73] Work directory=/home/jia-baos/Project-Cpp/CmakeFull, SDK version=v1.10.18-20250103-27bf2f6
+[06/27 20:19:35.830031][debug][6301][DeviceManager.cpp:30] DeviceManager init ...
+[06/27 20:19:35.830038][info][6301][LinuxPal.cpp:32] createObPal: create LinuxPal!
+[06/27 20:19:35.830700][debug][6301][DeviceManager.cpp:34] Enable USB Device Enumerator ...
+[06/27 20:19:35.830789][debug][6301][EnumeratorLibusb.cpp:324] queryDevicesInfo done!
+[06/27 20:19:35.830806][debug][6301][UsbDeviceEnumerator.cpp:163] Current usb device port list:
+[06/27 20:19:35.830813][debug][6301][UsbDeviceEnumerator.cpp:166]  - 1-1-6.0 | 
+[06/27 20:19:35.830841][warning][6301][OpenNIDeviceInfo.cpp:122] New openni device matched.
+[06/27 20:19:35.830912][info][6301][LinuxPal.cpp:166] Create PollingDeviceWatcher!
+[06/27 20:19:35.830931][debug][6301][UsbDeviceEnumerator.cpp:71] Found 1 device(s):
+[06/27 20:19:35.830938][debug][6301][UsbDeviceEnumerator.cpp:74]   - Name: Astra Mini Pro, PID: 0x065B, SN/ID: , connection: USB2.0
+[06/27 20:19:35.830947][info][6301][DeviceManager.cpp:15] Current found device(s): (1)
+[06/27 20:19:35.830956][info][6301][DeviceManager.cpp:24] 	- Name: Astra Mini Pro, PID: 0x065b, SN/ID: , Connection: USB2.0
+[06/27 20:19:35.830964][debug][6301][DeviceManager.cpp:52] DeviceManager construct done!
+[06/27 20:19:35.830985][debug][6301][FrameProcessingBlock.cpp:26] Block created with frame queue size: 10
+[06/27 20:21:24.640607][debug][6422][Context.cpp:30] Context creating, work_dir=/home/jia-baos/Project-Cpp/CmakeFull
+[06/27 20:21:24.640701][debug][6422][Context.cpp:49] Config file version=1.1
+[06/27 20:21:24.640738][debug][6422][FrameBufferManager.cpp:23] Max global frame buffer size updated! size=2048.000MB
+[06/27 20:21:24.640753][info][6422][Context.cpp:68] Context created with config: default config!
+[06/27 20:21:24.640805][info][6422][Context.cpp:73] Work directory=/home/jia-baos/Project-Cpp/CmakeFull, SDK version=v1.10.18-20250103-27bf2f6
+[06/27 20:21:24.640836][debug][6422][DeviceManager.cpp:30] DeviceManager init ...
+[06/27 20:21:24.640842][info][6422][LinuxPal.cpp:32] createObPal: create LinuxPal!
+[06/27 20:21:24.641486][debug][6422][DeviceManager.cpp:34] Enable USB Device Enumerator ...
+[06/27 20:21:24.641590][debug][6422][EnumeratorLibusb.cpp:324] queryDevicesInfo done!
+[06/27 20:21:24.641606][debug][6422][UsbDeviceEnumerator.cpp:163] Current usb device port list:
+[06/27 20:21:24.641611][debug][6422][UsbDeviceEnumerator.cpp:166]  - 1-2-7.0 | 
+[06/27 20:21:24.641631][warning][6422][OpenNIDeviceInfo.cpp:122] New openni device matched.
+[06/27 20:21:24.641709][info][6422][LinuxPal.cpp:166] Create PollingDeviceWatcher!
+[06/27 20:21:24.641729][debug][6422][UsbDeviceEnumerator.cpp:71] Found 1 device(s):
+[06/27 20:21:24.641735][debug][6422][UsbDeviceEnumerator.cpp:74]   - Name: Astra Mini Pro, PID: 0x065B, SN/ID: , connection: USB2.0
+[06/27 20:21:24.641743][info][6422][DeviceManager.cpp:15] Current found device(s): (1)
+[06/27 20:21:24.641753][info][6422][DeviceManager.cpp:24] 	- Name: Astra Mini Pro, PID: 0x065b, SN/ID: , Connection: USB2.0
+[06/27 20:21:24.641760][debug][6422][DeviceManager.cpp:52] DeviceManager construct done!
+[06/27 20:21:24.641783][debug][6422][FrameProcessingBlock.cpp:26] Block created with frame queue size: 10
+[06/27 20:21:43.554514][debug][6553][Context.cpp:30] Context creating, work_dir=/home/jia-baos/Project-Cpp/CmakeFull
+[06/27 20:21:43.554597][debug][6553][Context.cpp:49] Config file version=1.1
+[06/27 20:21:43.554616][debug][6553][FrameBufferManager.cpp:23] Max global frame buffer size updated! size=2048.000MB
+[06/27 20:21:43.554623][info][6553][Context.cpp:68] Context created with config: default config!
+[06/27 20:21:43.554646][info][6553][Context.cpp:73] Work directory=/home/jia-baos/Project-Cpp/CmakeFull, SDK version=v1.10.18-20250103-27bf2f6
+[06/27 20:21:43.554673][debug][6553][DeviceManager.cpp:30] DeviceManager init ...
+[06/27 20:21:43.554679][info][6553][LinuxPal.cpp:32] createObPal: create LinuxPal!
+[06/27 20:21:43.555388][debug][6553][DeviceManager.cpp:34] Enable USB Device Enumerator ...
+[06/27 20:21:43.555475][debug][6553][EnumeratorLibusb.cpp:324] queryDevicesInfo done!
+[06/27 20:21:43.555498][debug][6553][UsbDeviceEnumerator.cpp:163] Current usb device port list:
+[06/27 20:21:43.555512][debug][6553][UsbDeviceEnumerator.cpp:166]  - 1-3-8.0 | 
+[06/27 20:21:43.555534][warning][6553][OpenNIDeviceInfo.cpp:122] New openni device matched.
+[06/27 20:21:43.555614][info][6553][LinuxPal.cpp:166] Create PollingDeviceWatcher!
+[06/27 20:21:43.555633][debug][6553][UsbDeviceEnumerator.cpp:71] Found 1 device(s):
+[06/27 20:21:43.555638][debug][6553][UsbDeviceEnumerator.cpp:74]   - Name: Astra Mini Pro, PID: 0x065B, SN/ID: , connection: USB2.0
+[06/27 20:21:43.555645][info][6553][DeviceManager.cpp:15] Current found device(s): (1)
+[06/27 20:21:43.555653][info][6553][DeviceManager.cpp:24] 	- Name: Astra Mini Pro, PID: 0x065b, SN/ID: , Connection: USB2.0
+[06/27 20:21:43.555659][debug][6553][DeviceManager.cpp:52] DeviceManager construct done!
+[06/27 20:21:43.555680][debug][6553][FrameProcessingBlock.cpp:26] Block created with frame queue size: 10
+[06/27 20:23:13.064065][debug][7006][Context.cpp:30] Context creating, work_dir=/home/jia-baos/Project-Cpp/CmakeFull
+[06/27 20:23:13.064145][debug][7006][Context.cpp:49] Config file version=1.1
+[06/27 20:23:13.064170][debug][7006][FrameBufferManager.cpp:23] Max global frame buffer size updated! size=2048.000MB
+[06/27 20:23:13.064183][info][7006][Context.cpp:68] Context created with config: default config!
+[06/27 20:23:13.064214][info][7006][Context.cpp:73] Work directory=/home/jia-baos/Project-Cpp/CmakeFull, SDK version=v1.10.18-20250103-27bf2f6
+[06/27 20:23:13.064234][debug][7006][DeviceManager.cpp:30] DeviceManager init ...
+[06/27 20:23:13.064239][info][7006][LinuxPal.cpp:32] createObPal: create LinuxPal!
+[06/27 20:23:13.064836][debug][7006][DeviceManager.cpp:34] Enable USB Device Enumerator ...
+[06/27 20:23:13.064938][debug][7006][EnumeratorLibusb.cpp:324] queryDevicesInfo done!
+[06/27 20:23:13.064955][debug][7006][UsbDeviceEnumerator.cpp:163] Current usb device port list:
+[06/27 20:23:13.064961][debug][7006][UsbDeviceEnumerator.cpp:166]  - 1-3-8.0 | 
+[06/27 20:23:13.064986][warning][7006][OpenNIDeviceInfo.cpp:122] New openni device matched.
+[06/27 20:23:13.065074][info][7006][LinuxPal.cpp:166] Create PollingDeviceWatcher!
+[06/27 20:23:13.065093][debug][7006][UsbDeviceEnumerator.cpp:71] Found 1 device(s):
+[06/27 20:23:13.065099][debug][7006][UsbDeviceEnumerator.cpp:74]   - Name: Astra Mini Pro, PID: 0x065B, SN/ID: , connection: USB2.0
+[06/27 20:23:13.065106][info][7006][DeviceManager.cpp:15] Current found device(s): (1)
+[06/27 20:23:13.065117][info][7006][DeviceManager.cpp:24] 	- Name: Astra Mini Pro, PID: 0x065b, SN/ID: , Connection: USB2.0
+[06/27 20:23:13.065126][debug][7006][DeviceManager.cpp:52] DeviceManager construct done!
+[06/27 20:23:13.065147][debug][7006][FrameProcessingBlock.cpp:26] Block created with frame queue size: 10
+[06/27 20:23:55.967687][debug][7213][Context.cpp:30] Context creating, work_dir=/home/jia-baos/Project-Cpp/CmakeFull
+[06/27 20:23:55.967762][debug][7213][Context.cpp:49] Config file version=1.1
+[06/27 20:23:55.967788][debug][7213][FrameBufferManager.cpp:23] Max global frame buffer size updated! size=2048.000MB
+[06/27 20:23:55.967800][info][7213][Context.cpp:68] Context created with config: default config!
+[06/27 20:23:55.967827][info][7213][Context.cpp:73] Work directory=/home/jia-baos/Project-Cpp/CmakeFull, SDK version=v1.10.18-20250103-27bf2f6
+[06/27 20:23:55.967845][debug][7213][DeviceManager.cpp:30] DeviceManager init ...
+[06/27 20:23:55.967851][info][7213][LinuxPal.cpp:32] createObPal: create LinuxPal!
+[06/27 20:23:55.968525][debug][7213][DeviceManager.cpp:34] Enable USB Device Enumerator ...
+[06/27 20:23:55.968633][debug][7213][EnumeratorLibusb.cpp:324] queryDevicesInfo done!
+[06/27 20:23:55.968653][debug][7213][UsbDeviceEnumerator.cpp:163] Current usb device port list:
+[06/27 20:23:55.968661][debug][7213][UsbDeviceEnumerator.cpp:166]  - 1-3-8.0 | 
+[06/27 20:23:55.968689][warning][7213][OpenNIDeviceInfo.cpp:122] New openni device matched.
+[06/27 20:23:55.968847][info][7213][LinuxPal.cpp:166] Create PollingDeviceWatcher!
+[06/27 20:23:55.968869][debug][7213][UsbDeviceEnumerator.cpp:71] Found 1 device(s):
+[06/27 20:23:55.968877][debug][7213][UsbDeviceEnumerator.cpp:74]   - Name: Astra Mini Pro, PID: 0x065B, SN/ID: , connection: USB2.0
+[06/27 20:23:55.968885][info][7213][DeviceManager.cpp:15] Current found device(s): (1)
+[06/27 20:23:55.968897][info][7213][DeviceManager.cpp:24] 	- Name: Astra Mini Pro, PID: 0x065b, SN/ID: , Connection: USB2.0
+[06/27 20:23:55.968907][debug][7213][DeviceManager.cpp:52] DeviceManager construct done!
+[06/27 20:23:55.968931][debug][7213][FrameProcessingBlock.cpp:26] Block created with frame queue size: 10
+[06/27 20:28:33.079031][debug][7907][Context.cpp:30] Context creating, work_dir=/home/jia-baos/Project-Cpp/CmakeFull
+[06/27 20:28:33.079148][debug][7907][Context.cpp:49] Config file version=1.1
+[06/27 20:28:33.079176][debug][7907][FrameBufferManager.cpp:23] Max global frame buffer size updated! size=2048.000MB
+[06/27 20:28:33.079188][info][7907][Context.cpp:68] Context created with config: default config!
+[06/27 20:28:33.079218][info][7907][Context.cpp:73] Work directory=/home/jia-baos/Project-Cpp/CmakeFull, SDK version=v1.10.18-20250103-27bf2f6
+[06/27 20:28:33.079250][debug][7907][DeviceManager.cpp:30] DeviceManager init ...
+[06/27 20:28:33.079257][info][7907][LinuxPal.cpp:32] createObPal: create LinuxPal!
+[06/27 20:28:33.079942][debug][7907][DeviceManager.cpp:34] Enable USB Device Enumerator ...
+[06/27 20:28:33.080024][debug][7907][EnumeratorLibusb.cpp:324] queryDevicesInfo done!
+[06/27 20:28:33.080042][debug][7907][UsbDeviceEnumerator.cpp:163] Current usb device port list:
+[06/27 20:28:33.080051][debug][7907][UsbDeviceEnumerator.cpp:166]  - 1-3-8.0 | 
+[06/27 20:28:33.080079][warning][7907][OpenNIDeviceInfo.cpp:122] New openni device matched.
+[06/27 20:28:33.080167][info][7907][LinuxPal.cpp:166] Create PollingDeviceWatcher!
+[06/27 20:28:33.080187][debug][7907][UsbDeviceEnumerator.cpp:71] Found 1 device(s):
+[06/27 20:28:33.080193][debug][7907][UsbDeviceEnumerator.cpp:74]   - Name: Astra Mini Pro, PID: 0x065B, SN/ID: , connection: USB2.0
+[06/27 20:28:33.080201][info][7907][DeviceManager.cpp:15] Current found device(s): (1)
+[06/27 20:28:33.080212][info][7907][DeviceManager.cpp:24] 	- Name: Astra Mini Pro, PID: 0x065b, SN/ID: , Connection: USB2.0
+[06/27 20:28:33.080222][debug][7907][DeviceManager.cpp:52] DeviceManager construct done!
+[06/27 20:28:33.080242][debug][7907][FrameProcessingBlock.cpp:26] Block created with frame queue size: 10
+[06/27 20:31:45.175726][debug][8237][Context.cpp:30] Context creating, work_dir=/home/jia-baos/Project-Cpp/CmakeFull
+[06/27 20:31:45.175813][debug][8237][Context.cpp:49] Config file version=1.1
+[06/27 20:31:45.175840][debug][8237][FrameBufferManager.cpp:23] Max global frame buffer size updated! size=2048.000MB
+[06/27 20:31:45.175852][info][8237][Context.cpp:68] Context created with config: default config!
+[06/27 20:31:45.175880][info][8237][Context.cpp:73] Work directory=/home/jia-baos/Project-Cpp/CmakeFull, SDK version=v1.10.18-20250103-27bf2f6
+[06/27 20:31:45.175911][debug][8237][DeviceManager.cpp:30] DeviceManager init ...
+[06/27 20:31:45.175918][info][8237][LinuxPal.cpp:32] createObPal: create LinuxPal!
+[06/27 20:31:45.176556][debug][8237][DeviceManager.cpp:34] Enable USB Device Enumerator ...
+[06/27 20:31:45.176651][debug][8237][EnumeratorLibusb.cpp:324] queryDevicesInfo done!
+[06/27 20:31:45.176668][debug][8237][UsbDeviceEnumerator.cpp:163] Current usb device port list:
+[06/27 20:31:45.176674][debug][8237][UsbDeviceEnumerator.cpp:166]  - 1-3-8.0 | 
+[06/27 20:31:45.176695][warning][8237][OpenNIDeviceInfo.cpp:122] New openni device matched.
+[06/27 20:31:45.176768][info][8237][LinuxPal.cpp:166] Create PollingDeviceWatcher!
+[06/27 20:31:45.176790][debug][8237][UsbDeviceEnumerator.cpp:71] Found 1 device(s):
+[06/27 20:31:45.176798][debug][8237][UsbDeviceEnumerator.cpp:74]   - Name: Astra Mini Pro, PID: 0x065B, SN/ID: , connection: USB2.0
+[06/27 20:31:45.176807][info][8237][DeviceManager.cpp:15] Current found device(s): (1)
+[06/27 20:31:45.176817][info][8237][DeviceManager.cpp:24] 	- Name: Astra Mini Pro, PID: 0x065b, SN/ID: , Connection: USB2.0
+[06/27 20:31:45.176825][debug][8237][DeviceManager.cpp:52] DeviceManager construct done!
+[06/27 20:31:45.176857][debug][8237][FrameProcessingBlock.cpp:26] Block created with frame queue size: 10
+[06/27 20:34:53.876164][debug][8978][Context.cpp:30] Context creating, work_dir=/home/jia-baos/Project-Cpp/CmakeFull
+[06/27 20:34:53.876254][debug][8978][Context.cpp:49] Config file version=1.1
+[06/27 20:34:53.876286][debug][8978][FrameBufferManager.cpp:23] Max global frame buffer size updated! size=2048.000MB
+[06/27 20:34:53.876304][info][8978][Context.cpp:68] Context created with config: default config!
+[06/27 20:34:53.876336][info][8978][Context.cpp:73] Work directory=/home/jia-baos/Project-Cpp/CmakeFull, SDK version=v1.10.18-20250103-27bf2f6
+[06/27 20:34:53.876371][debug][8978][DeviceManager.cpp:30] DeviceManager init ...
+[06/27 20:34:53.876379][info][8978][LinuxPal.cpp:32] createObPal: create LinuxPal!
+[06/27 20:34:53.877281][debug][8978][DeviceManager.cpp:34] Enable USB Device Enumerator ...
+[06/27 20:34:53.877389][debug][8978][EnumeratorLibusb.cpp:324] queryDevicesInfo done!
+[06/27 20:34:53.877410][debug][8978][UsbDeviceEnumerator.cpp:163] Current usb device port list:
+[06/27 20:34:53.877420][debug][8978][UsbDeviceEnumerator.cpp:166]  - 1-3-8.0 | 
+[06/27 20:34:53.877453][warning][8978][OpenNIDeviceInfo.cpp:122] New openni device matched.
+[06/27 20:34:53.877560][info][8978][LinuxPal.cpp:166] Create PollingDeviceWatcher!
+[06/27 20:34:53.877587][debug][8978][UsbDeviceEnumerator.cpp:71] Found 1 device(s):
+[06/27 20:34:53.877596][debug][8978][UsbDeviceEnumerator.cpp:74]   - Name: Astra Mini Pro, PID: 0x065B, SN/ID: , connection: USB2.0
+[06/27 20:34:53.877617][info][8978][DeviceManager.cpp:15] Current found device(s): (1)
+[06/27 20:34:53.877630][info][8978][DeviceManager.cpp:24] 	- Name: Astra Mini Pro, PID: 0x065b, SN/ID: , Connection: USB2.0
+[06/27 20:34:53.877640][debug][8978][DeviceManager.cpp:52] DeviceManager construct done!
+[06/27 20:34:53.877667][debug][8978][FrameProcessingBlock.cpp:26] Block created with frame queue size: 10
+[06/27 20:47:26.927241][debug][9722][Context.cpp:30] Context creating, work_dir=/home/jia-baos/Project-Cpp/CmakeFull
+[06/27 20:47:26.927316][debug][9722][Context.cpp:49] Config file version=1.1
+[06/27 20:47:26.927341][debug][9722][FrameBufferManager.cpp:23] Max global frame buffer size updated! size=2048.000MB
+[06/27 20:47:26.927353][info][9722][Context.cpp:68] Context created with config: default config!
+[06/27 20:47:26.927377][info][9722][Context.cpp:73] Work directory=/home/jia-baos/Project-Cpp/CmakeFull, SDK version=v1.10.18-20250103-27bf2f6
+[06/27 20:47:26.927404][debug][9722][DeviceManager.cpp:30] DeviceManager init ...
+[06/27 20:47:26.927409][info][9722][LinuxPal.cpp:32] createObPal: create LinuxPal!
+[06/27 20:47:26.927981][debug][9722][DeviceManager.cpp:34] Enable USB Device Enumerator ...
+[06/27 20:47:26.928054][debug][9722][EnumeratorLibusb.cpp:324] queryDevicesInfo done!
+[06/27 20:47:26.928067][debug][9722][UsbDeviceEnumerator.cpp:163] Current usb device port list:
+[06/27 20:47:26.928073][debug][9722][UsbDeviceEnumerator.cpp:166]  - 1-3-8.0 | 
+[06/27 20:47:26.928091][warning][9722][OpenNIDeviceInfo.cpp:122] New openni device matched.
+[06/27 20:47:26.928164][info][9722][LinuxPal.cpp:166] Create PollingDeviceWatcher!
+[06/27 20:47:26.928184][debug][9722][UsbDeviceEnumerator.cpp:71] Found 1 device(s):
+[06/27 20:47:26.928191][debug][9722][UsbDeviceEnumerator.cpp:74]   - Name: Astra Mini Pro, PID: 0x065B, SN/ID: , connection: USB2.0
+[06/27 20:47:26.928198][info][9722][DeviceManager.cpp:15] Current found device(s): (1)
+[06/27 20:47:26.928207][info][9722][DeviceManager.cpp:24] 	- Name: Astra Mini Pro, PID: 0x065b, SN/ID: , Connection: USB2.0
+[06/27 20:47:26.928215][debug][9722][DeviceManager.cpp:52] DeviceManager construct done!
+[06/27 20:47:26.928236][debug][9722][FrameProcessingBlock.cpp:26] Block created with frame queue size: 10
+[06/27 20:49:11.808810][debug][9983][Context.cpp:30] Context creating, work_dir=/home/jia-baos/Project-Cpp/CmakeFull
+[06/27 20:49:11.808903][debug][9983][Context.cpp:49] Config file version=1.1
+[06/27 20:49:11.808933][debug][9983][FrameBufferManager.cpp:23] Max global frame buffer size updated! size=2048.000MB
+[06/27 20:49:11.808946][info][9983][Context.cpp:68] Context created with config: default config!
+[06/27 20:49:11.808977][info][9983][Context.cpp:73] Work directory=/home/jia-baos/Project-Cpp/CmakeFull, SDK version=v1.10.18-20250103-27bf2f6
+[06/27 20:49:11.809010][debug][9983][DeviceManager.cpp:30] DeviceManager init ...
+[06/27 20:49:11.809018][info][9983][LinuxPal.cpp:32] createObPal: create LinuxPal!
+[06/27 20:49:11.809841][debug][9983][DeviceManager.cpp:34] Enable USB Device Enumerator ...
+[06/27 20:49:11.809940][debug][9983][EnumeratorLibusb.cpp:324] queryDevicesInfo done!
+[06/27 20:49:11.809960][debug][9983][UsbDeviceEnumerator.cpp:163] Current usb device port list:
+[06/27 20:49:11.809967][debug][9983][UsbDeviceEnumerator.cpp:166]  - 1-3-8.0 | 
+[06/27 20:49:11.809987][warning][9983][OpenNIDeviceInfo.cpp:122] New openni device matched.
+[06/27 20:49:11.810081][info][9983][LinuxPal.cpp:166] Create PollingDeviceWatcher!
+[06/27 20:49:11.810108][debug][9983][UsbDeviceEnumerator.cpp:71] Found 1 device(s):
+[06/27 20:49:11.810115][debug][9983][UsbDeviceEnumerator.cpp:74]   - Name: Astra Mini Pro, PID: 0x065B, SN/ID: , connection: USB2.0
+[06/27 20:49:11.810122][info][9983][DeviceManager.cpp:15] Current found device(s): (1)
+[06/27 20:49:11.810132][info][9983][DeviceManager.cpp:24] 	- Name: Astra Mini Pro, PID: 0x065b, SN/ID: , Connection: USB2.0
+[06/27 20:49:11.810142][debug][9983][DeviceManager.cpp:52] DeviceManager construct done!
+[06/27 20:49:11.810160][debug][9983][FrameProcessingBlock.cpp:26] Block created with frame queue size: 10
+[06/27 20:51:24.737053][debug][10375][Context.cpp:30] Context creating, work_dir=/home/jia-baos/Project-Cpp/CmakeFull
+[06/27 20:51:24.737198][debug][10375][Context.cpp:49] Config file version=1.1
+[06/27 20:51:24.737229][debug][10375][FrameBufferManager.cpp:23] Max global frame buffer size updated! size=2048.000MB
+[06/27 20:51:24.737244][info][10375][Context.cpp:68] Context created with config: default config!
+[06/27 20:51:24.737280][info][10375][Context.cpp:73] Work directory=/home/jia-baos/Project-Cpp/CmakeFull, SDK version=v1.10.18-20250103-27bf2f6
+[06/27 20:51:24.737316][debug][10375][DeviceManager.cpp:30] DeviceManager init ...
+[06/27 20:51:24.737323][info][10375][LinuxPal.cpp:32] createObPal: create LinuxPal!
+[06/27 20:51:24.738029][debug][10375][DeviceManager.cpp:34] Enable USB Device Enumerator ...
+[06/27 20:51:24.738150][debug][10375][EnumeratorLibusb.cpp:324] queryDevicesInfo done!
+[06/27 20:51:24.738174][debug][10375][UsbDeviceEnumerator.cpp:163] Current usb device port list:
+[06/27 20:51:24.738183][debug][10375][UsbDeviceEnumerator.cpp:166]  - 1-3-8.0 | 
+[06/27 20:51:24.738211][warning][10375][OpenNIDeviceInfo.cpp:122] New openni device matched.
+[06/27 20:51:24.738317][info][10375][LinuxPal.cpp:166] Create PollingDeviceWatcher!
+[06/27 20:51:24.738340][debug][10375][UsbDeviceEnumerator.cpp:71] Found 1 device(s):
+[06/27 20:51:24.738347][debug][10375][UsbDeviceEnumerator.cpp:74]   - Name: Astra Mini Pro, PID: 0x065B, SN/ID: , connection: USB2.0
+[06/27 20:51:24.738357][info][10375][DeviceManager.cpp:15] Current found device(s): (1)
+[06/27 20:51:24.738370][info][10375][DeviceManager.cpp:24] 	- Name: Astra Mini Pro, PID: 0x065b, SN/ID: , Connection: USB2.0
+[06/27 20:51:24.738380][debug][10375][DeviceManager.cpp:52] DeviceManager construct done!
+[06/27 20:51:24.738405][debug][10375][FrameProcessingBlock.cpp:26] Block created with frame queue size: 10
+[06/27 20:52:21.166335][debug][10501][Context.cpp:30] Context creating, work_dir=/home/jia-baos/Project-Cpp/CmakeFull
+[06/27 20:52:21.166405][debug][10501][Context.cpp:49] Config file version=1.1
+[06/27 20:52:21.166427][debug][10501][FrameBufferManager.cpp:23] Max global frame buffer size updated! size=2048.000MB
+[06/27 20:52:21.166435][info][10501][Context.cpp:68] Context created with config: default config!
+[06/27 20:52:21.166458][info][10501][Context.cpp:73] Work directory=/home/jia-baos/Project-Cpp/CmakeFull, SDK version=v1.10.18-20250103-27bf2f6
+[06/27 20:52:21.166477][debug][10501][DeviceManager.cpp:30] DeviceManager init ...
+[06/27 20:52:21.166500][info][10501][LinuxPal.cpp:32] createObPal: create LinuxPal!
+[06/27 20:52:21.167666][debug][10501][DeviceManager.cpp:34] Enable USB Device Enumerator ...
+[06/27 20:52:21.168890][debug][10501][EnumeratorLibusb.cpp:324] queryDevicesInfo done!
+[06/27 20:52:21.169008][debug][10501][UsbDeviceEnumerator.cpp:163] Current usb device port list:
+[06/27 20:52:21.169036][debug][10501][UsbDeviceEnumerator.cpp:166]  - 1-3-8.0 | Orbbec(R) Astra(TM) 3D Camera(F) Depth
+[06/27 20:52:21.169105][warning][10501][OpenNIDeviceInfo.cpp:122] New openni device matched.
+[06/27 20:52:21.169393][info][10501][LinuxPal.cpp:166] Create PollingDeviceWatcher!
+[06/27 20:52:21.169454][debug][10501][UsbDeviceEnumerator.cpp:71] Found 1 device(s):
+[06/27 20:52:21.169473][debug][10501][UsbDeviceEnumerator.cpp:74]   - Name: Astra Mini Pro, PID: 0x065B, SN/ID: AD74B3300X2, connection: USB2.0
+[06/27 20:52:21.169490][info][10501][DeviceManager.cpp:15] Current found device(s): (1)
+[06/27 20:52:21.169605][info][10501][DeviceManager.cpp:24] 	- Name: Astra Mini Pro, PID: 0x065b, SN/ID: AD74B3300X2, Connection: USB2.0
+[06/27 20:52:21.169641][debug][10501][DeviceManager.cpp:52] DeviceManager construct done!
+[06/27 20:52:21.169698][debug][10501][FrameProcessingBlock.cpp:26] Block created with frame queue size: 10
+[06/27 20:56:48.072878][debug][11294][Context.cpp:30] Context creating, work_dir=/home/jia-baos/Project-Cpp/CmakeFull
+[06/27 20:56:48.073119][debug][11294][Context.cpp:49] Config file version=1.1
+[06/27 20:56:48.073218][debug][11294][FrameBufferManager.cpp:23] Max global frame buffer size updated! size=2048.000MB
+[06/27 20:56:48.073252][info][11294][Context.cpp:68] Context created with config: default config!
+[06/27 20:56:48.073334][info][11294][Context.cpp:73] Work directory=/home/jia-baos/Project-Cpp/CmakeFull, SDK version=v1.10.18-20250103-27bf2f6
+[06/27 20:56:48.073434][debug][11294][DeviceManager.cpp:30] DeviceManager init ...
+[06/27 20:56:48.073439][info][11294][LinuxPal.cpp:32] createObPal: create LinuxPal!
+[06/27 20:56:48.074002][debug][11294][DeviceManager.cpp:34] Enable USB Device Enumerator ...
+[06/27 20:56:48.075579][debug][11294][EnumeratorLibusb.cpp:324] queryDevicesInfo done!
+[06/27 20:56:48.075623][debug][11294][UsbDeviceEnumerator.cpp:163] Current usb device port list:
+[06/27 20:56:48.075633][debug][11294][UsbDeviceEnumerator.cpp:166]  - 1-3-8.0 | Orbbec(R) Astra(TM) 3D Camera(F) Depth
+[06/27 20:56:48.075662][warning][11294][OpenNIDeviceInfo.cpp:122] New openni device matched.
+[06/27 20:56:48.075770][info][11294][LinuxPal.cpp:166] Create PollingDeviceWatcher!
+[06/27 20:56:48.075871][debug][11294][UsbDeviceEnumerator.cpp:71] Found 1 device(s):
+[06/27 20:56:48.075879][debug][11294][UsbDeviceEnumerator.cpp:74]   - Name: Astra Mini Pro, PID: 0x065B, SN/ID: AD74B3300X2, connection: USB2.0
+[06/27 20:56:48.075887][info][11294][DeviceManager.cpp:15] Current found device(s): (1)
+[06/27 20:56:48.075908][info][11294][DeviceManager.cpp:24] 	- Name: Astra Mini Pro, PID: 0x065b, SN/ID: AD74B3300X2, Connection: USB2.0
+[06/27 20:56:48.075914][debug][11294][DeviceManager.cpp:52] DeviceManager construct done!
+[06/27 20:56:48.075938][debug][11294][FrameProcessingBlock.cpp:26] Block created with frame queue size: 10
+[06/27 20:58:02.325588][debug][11534][Context.cpp:30] Context creating, work_dir=/home/jia-baos/Project-Cpp/CmakeFull
+[06/27 20:58:02.325661][debug][11534][Context.cpp:49] Config file version=1.1
+[06/27 20:58:02.325676][debug][11534][FrameBufferManager.cpp:23] Max global frame buffer size updated! size=2048.000MB
+[06/27 20:58:02.325683][info][11534][Context.cpp:68] Context created with config: default config!
+[06/27 20:58:02.325703][info][11534][Context.cpp:73] Work directory=/home/jia-baos/Project-Cpp/CmakeFull, SDK version=v1.10.18-20250103-27bf2f6
+[06/27 20:58:02.325722][debug][11534][DeviceManager.cpp:30] DeviceManager init ...
+[06/27 20:58:02.325726][info][11534][LinuxPal.cpp:32] createObPal: create LinuxPal!
+[06/27 20:58:02.326256][debug][11534][DeviceManager.cpp:34] Enable USB Device Enumerator ...
+[06/27 20:58:02.326940][debug][11534][EnumeratorLibusb.cpp:324] queryDevicesInfo done!
+[06/27 20:58:02.326959][debug][11534][UsbDeviceEnumerator.cpp:163] Current usb device port list:
+[06/27 20:58:02.326965][debug][11534][UsbDeviceEnumerator.cpp:166]  - 1-3-8.0 | Orbbec(R) Astra(TM) 3D Camera(F) Depth
+[06/27 20:58:02.326984][warning][11534][OpenNIDeviceInfo.cpp:122] New openni device matched.
+[06/27 20:58:02.327058][info][11534][LinuxPal.cpp:166] Create PollingDeviceWatcher!
+[06/27 20:58:02.327082][debug][11534][UsbDeviceEnumerator.cpp:71] Found 1 device(s):
+[06/27 20:58:02.327090][debug][11534][UsbDeviceEnumerator.cpp:74]   - Name: Astra Mini Pro, PID: 0x065B, SN/ID: AD74B3300X2, connection: USB2.0
+[06/27 20:58:02.327099][info][11534][DeviceManager.cpp:15] Current found device(s): (1)
+[06/27 20:58:02.327111][info][11534][DeviceManager.cpp:24] 	- Name: Astra Mini Pro, PID: 0x065b, SN/ID: AD74B3300X2, Connection: USB2.0
+[06/27 20:58:02.327120][debug][11534][DeviceManager.cpp:52] DeviceManager construct done!
+[06/27 20:58:02.327143][debug][11534][FrameProcessingBlock.cpp:26] Block created with frame queue size: 10
+[06/27 20:59:36.247287][debug][12028][Context.cpp:30] Context creating, work_dir=/home/jia-baos/Project-Cpp/CmakeFull
+[06/27 20:59:36.247369][debug][12028][Context.cpp:49] Config file version=1.1
+[06/27 20:59:36.247385][debug][12028][FrameBufferManager.cpp:23] Max global frame buffer size updated! size=2048.000MB
+[06/27 20:59:36.247391][info][12028][Context.cpp:68] Context created with config: default config!
+[06/27 20:59:36.247421][info][12028][Context.cpp:73] Work directory=/home/jia-baos/Project-Cpp/CmakeFull, SDK version=v1.10.18-20250103-27bf2f6
+[06/27 20:59:36.247439][debug][12028][DeviceManager.cpp:30] DeviceManager init ...
+[06/27 20:59:36.247442][info][12028][LinuxPal.cpp:32] createObPal: create LinuxPal!
+[06/27 20:59:36.247951][debug][12028][DeviceManager.cpp:34] Enable USB Device Enumerator ...
+[06/27 20:59:36.248466][debug][12028][EnumeratorLibusb.cpp:324] queryDevicesInfo done!
+[06/27 20:59:36.248486][debug][12028][UsbDeviceEnumerator.cpp:163] Current usb device port list:
+[06/27 20:59:36.248502][debug][12028][UsbDeviceEnumerator.cpp:166]  - 1-3-8.0 | Orbbec(R) Astra(TM) 3D Camera(F) Depth
+[06/27 20:59:36.248532][warning][12028][OpenNIDeviceInfo.cpp:122] New openni device matched.
+[06/27 20:59:36.248602][info][12028][LinuxPal.cpp:166] Create PollingDeviceWatcher!
+[06/27 20:59:36.248620][debug][12028][UsbDeviceEnumerator.cpp:71] Found 1 device(s):
+[06/27 20:59:36.248625][debug][12028][UsbDeviceEnumerator.cpp:74]   - Name: Astra Mini Pro, PID: 0x065B, SN/ID: AD74B3300X2, connection: USB2.0
+[06/27 20:59:36.248633][info][12028][DeviceManager.cpp:15] Current found device(s): (1)
+[06/27 20:59:36.248644][info][12028][DeviceManager.cpp:24] 	- Name: Astra Mini Pro, PID: 0x065b, SN/ID: AD74B3300X2, Connection: USB2.0
+[06/27 20:59:36.248652][debug][12028][DeviceManager.cpp:52] DeviceManager construct done!
+[06/27 20:59:36.248672][debug][12028][FrameProcessingBlock.cpp:26] Block created with frame queue size: 10
+[06/27 21:05:55.259797][debug][13743][Context.cpp:30] Context creating, work_dir=/home/jia-baos/Project-Cpp/CmakeFull
+[06/27 21:05:55.259863][debug][13743][Context.cpp:49] Config file version=1.1
+[06/27 21:05:55.259883][debug][13743][FrameBufferManager.cpp:23] Max global frame buffer size updated! size=2048.000MB
+[06/27 21:05:55.259892][info][13743][Context.cpp:68] Context created with config: default config!
+[06/27 21:05:55.259914][info][13743][Context.cpp:73] Work directory=/home/jia-baos/Project-Cpp/CmakeFull, SDK version=v1.10.18-20250103-27bf2f6
+[06/27 21:05:55.259934][debug][13743][DeviceManager.cpp:30] DeviceManager init ...
+[06/27 21:05:55.259940][info][13743][LinuxPal.cpp:32] createObPal: create LinuxPal!
+[06/27 21:05:55.260439][debug][13743][DeviceManager.cpp:34] Enable USB Device Enumerator ...
+[06/27 21:05:55.260973][debug][13743][EnumeratorLibusb.cpp:324] queryDevicesInfo done!
+[06/27 21:05:55.260997][debug][13743][UsbDeviceEnumerator.cpp:163] Current usb device port list:
+[06/27 21:05:55.261005][debug][13743][UsbDeviceEnumerator.cpp:166]  - 1-3-8.0 | Orbbec(R) Astra(TM) 3D Camera(F) Depth
+[06/27 21:05:55.261032][warning][13743][OpenNIDeviceInfo.cpp:122] New openni device matched.
+[06/27 21:05:55.261107][info][13743][LinuxPal.cpp:166] Create PollingDeviceWatcher!
+[06/27 21:05:55.261128][debug][13743][UsbDeviceEnumerator.cpp:71] Found 1 device(s):
+[06/27 21:05:55.261134][debug][13743][UsbDeviceEnumerator.cpp:74]   - Name: Astra Mini Pro, PID: 0x065B, SN/ID: AD74B3300X2, connection: USB2.0
+[06/27 21:05:55.261143][info][13743][DeviceManager.cpp:15] Current found device(s): (1)
+[06/27 21:05:55.261154][info][13743][DeviceManager.cpp:24] 	- Name: Astra Mini Pro, PID: 0x065b, SN/ID: AD74B3300X2, Connection: USB2.0
+[06/27 21:05:55.261162][debug][13743][DeviceManager.cpp:52] DeviceManager construct done!
+[06/27 21:05:55.261182][debug][13743][FrameProcessingBlock.cpp:26] Block created with frame queue size: 10
+[06/27 21:14:45.511785][debug][15387][Context.cpp:30] Context creating, work_dir=/home/jia-baos/Project-Cpp/CmakeFull
+[06/27 21:14:45.512069][debug][15387][Context.cpp:49] Config file version=1.1
+[06/27 21:14:45.512130][debug][15387][FrameBufferManager.cpp:23] Max global frame buffer size updated! size=2048.000MB
+[06/27 21:14:45.512156][info][15387][Context.cpp:68] Context created with config: default config!
+[06/27 21:14:45.512216][info][15387][Context.cpp:73] Work directory=/home/jia-baos/Project-Cpp/CmakeFull, SDK version=v1.10.18-20250103-27bf2f6
+[06/27 21:14:45.512253][debug][15387][DeviceManager.cpp:30] DeviceManager init ...
+[06/27 21:14:45.512286][info][15387][LinuxPal.cpp:32] createObPal: create LinuxPal!
+[06/27 21:14:45.513434][debug][15387][DeviceManager.cpp:34] Enable USB Device Enumerator ...
+[06/27 21:14:45.513997][debug][15387][EnumeratorLibusb.cpp:324] queryDevicesInfo done!
+[06/27 21:14:45.514037][debug][15387][UsbDeviceEnumerator.cpp:163] Current usb device port list:
+[06/27 21:14:45.514045][debug][15387][UsbDeviceEnumerator.cpp:166]  - 1-3-8.0 | Orbbec(R) Astra(TM) 3D Camera(F) Depth
+[06/27 21:14:45.514066][warning][15387][OpenNIDeviceInfo.cpp:122] New openni device matched.
+[06/27 21:14:45.514162][info][15387][LinuxPal.cpp:166] Create PollingDeviceWatcher!
+[06/27 21:14:45.514182][debug][15387][UsbDeviceEnumerator.cpp:71] Found 1 device(s):
+[06/27 21:14:45.514189][debug][15387][UsbDeviceEnumerator.cpp:74]   - Name: Astra Mini Pro, PID: 0x065B, SN/ID: AD74B3300X2, connection: USB2.0
+[06/27 21:14:45.514196][info][15387][DeviceManager.cpp:15] Current found device(s): (1)
+[06/27 21:14:45.514209][info][15387][DeviceManager.cpp:24] 	- Name: Astra Mini Pro, PID: 0x065b, SN/ID: AD74B3300X2, Connection: USB2.0
+[06/27 21:14:45.514218][debug][15387][DeviceManager.cpp:52] DeviceManager construct done!
+[06/27 21:14:45.514242][debug][15387][FrameProcessingBlock.cpp:26] Block created with frame queue size: 10
+[06/27 21:16:17.995168][debug][15830][Context.cpp:30] Context creating, work_dir=/home/jia-baos/Project-Cpp/CmakeFull
+[06/27 21:16:17.995241][debug][15830][Context.cpp:49] Config file version=1.1
+[06/27 21:16:17.995262][debug][15830][FrameBufferManager.cpp:23] Max global frame buffer size updated! size=2048.000MB
+[06/27 21:16:17.995271][info][15830][Context.cpp:68] Context created with config: default config!
+[06/27 21:16:17.995294][info][15830][Context.cpp:73] Work directory=/home/jia-baos/Project-Cpp/CmakeFull, SDK version=v1.10.18-20250103-27bf2f6
+[06/27 21:16:17.995313][debug][15830][DeviceManager.cpp:30] DeviceManager init ...
+[06/27 21:16:17.995318][info][15830][LinuxPal.cpp:32] createObPal: create LinuxPal!
+[06/27 21:16:17.995933][debug][15830][DeviceManager.cpp:34] Enable USB Device Enumerator ...
+[06/27 21:16:17.996465][debug][15830][EnumeratorLibusb.cpp:324] queryDevicesInfo done!
+[06/27 21:16:17.996507][debug][15830][UsbDeviceEnumerator.cpp:163] Current usb device port list:
+[06/27 21:16:17.996520][debug][15830][UsbDeviceEnumerator.cpp:166]  - 1-3-12.0 | Orbbec(R) Astra(TM) 3D Camera(F) Depth
+[06/27 21:16:17.996548][warning][15830][OpenNIDeviceInfo.cpp:122] New openni device matched.
+[06/27 21:16:17.996652][info][15830][LinuxPal.cpp:166] Create PollingDeviceWatcher!
+[06/27 21:16:17.996670][debug][15830][UsbDeviceEnumerator.cpp:71] Found 1 device(s):
+[06/27 21:16:17.996678][debug][15830][UsbDeviceEnumerator.cpp:74]   - Name: Astra Mini Pro, PID: 0x065B, SN/ID: AD74B3300X2, connection: USB2.0
+[06/27 21:16:17.996686][info][15830][DeviceManager.cpp:15] Current found device(s): (1)
+[06/27 21:16:17.996695][info][15830][DeviceManager.cpp:24] 	- Name: Astra Mini Pro, PID: 0x065b, SN/ID: AD74B3300X2, Connection: USB2.0
+[06/27 21:16:17.996703][debug][15830][DeviceManager.cpp:52] DeviceManager construct done!
+[06/27 21:16:17.996727][debug][15830][FrameProcessingBlock.cpp:26] Block created with frame queue size: 10
+[06/27 21:18:31.655845][debug][16504][Context.cpp:30] Context creating, work_dir=/home/jia-baos/Project-Cpp/CmakeFull
+[06/27 21:18:31.655927][debug][16504][Context.cpp:49] Config file version=1.1
+[06/27 21:18:31.655955][debug][16504][FrameBufferManager.cpp:23] Max global frame buffer size updated! size=2048.000MB
+[06/27 21:18:31.655965][info][16504][Context.cpp:68] Context created with config: default config!
+[06/27 21:18:31.655990][info][16504][Context.cpp:73] Work directory=/home/jia-baos/Project-Cpp/CmakeFull, SDK version=v1.10.18-20250103-27bf2f6
+[06/27 21:18:31.656014][debug][16504][DeviceManager.cpp:30] DeviceManager init ...
+[06/27 21:18:31.656020][info][16504][LinuxPal.cpp:32] createObPal: create LinuxPal!
+[06/27 21:18:31.656677][debug][16504][DeviceManager.cpp:34] Enable USB Device Enumerator ...
+[06/27 21:18:31.657275][debug][16504][EnumeratorLibusb.cpp:324] queryDevicesInfo done!
+[06/27 21:18:31.657301][debug][16504][UsbDeviceEnumerator.cpp:163] Current usb device port list:
+[06/27 21:18:31.657308][debug][16504][UsbDeviceEnumerator.cpp:166]  - 1-3-12.0 | Orbbec(R) Astra(TM) 3D Camera(F) Depth
+[06/27 21:18:31.657335][warning][16504][OpenNIDeviceInfo.cpp:122] New openni device matched.
+[06/27 21:18:31.657422][info][16504][LinuxPal.cpp:166] Create PollingDeviceWatcher!
+[06/27 21:18:31.657445][debug][16504][UsbDeviceEnumerator.cpp:71] Found 1 device(s):
+[06/27 21:18:31.657451][debug][16504][UsbDeviceEnumerator.cpp:74]   - Name: Astra Mini Pro, PID: 0x065B, SN/ID: AD74B3300X2, connection: USB2.0
+[06/27 21:18:31.657458][info][16504][DeviceManager.cpp:15] Current found device(s): (1)
+[06/27 21:18:31.657470][info][16504][DeviceManager.cpp:24] 	- Name: Astra Mini Pro, PID: 0x065b, SN/ID: AD74B3300X2, Connection: USB2.0
+[06/27 21:18:31.657478][debug][16504][DeviceManager.cpp:52] DeviceManager construct done!
+[06/27 21:18:31.657508][debug][16504][FrameProcessingBlock.cpp:26] Block created with frame queue size: 10
+[06/27 21:18:44.246711][debug][16649][Context.cpp:30] Context creating, work_dir=/home/jia-baos/Project-Cpp/CmakeFull
+[06/27 21:18:44.246803][debug][16649][Context.cpp:49] Config file version=1.1
+[06/27 21:18:44.246817][debug][16649][FrameBufferManager.cpp:23] Max global frame buffer size updated! size=2048.000MB
+[06/27 21:18:44.246822][info][16649][Context.cpp:68] Context created with config: default config!
+[06/27 21:18:44.246838][info][16649][Context.cpp:73] Work directory=/home/jia-baos/Project-Cpp/CmakeFull, SDK version=v1.10.18-20250103-27bf2f6
+[06/27 21:18:44.246857][debug][16649][DeviceManager.cpp:30] DeviceManager init ...
+[06/27 21:18:44.246861][info][16649][LinuxPal.cpp:32] createObPal: create LinuxPal!
+[06/27 21:18:44.247382][debug][16649][DeviceManager.cpp:34] Enable USB Device Enumerator ...
+[06/27 21:18:44.248094][debug][16649][EnumeratorLibusb.cpp:324] queryDevicesInfo done!
+[06/27 21:18:44.248116][debug][16649][UsbDeviceEnumerator.cpp:163] Current usb device port list:
+[06/27 21:18:44.248120][debug][16649][UsbDeviceEnumerator.cpp:166]  - 1-3-13.0 | Orbbec(R) Astra(TM) 3D Camera(F) Depth
+[06/27 21:18:44.248139][warning][16649][OpenNIDeviceInfo.cpp:122] New openni device matched.
+[06/27 21:18:44.248208][info][16649][LinuxPal.cpp:166] Create PollingDeviceWatcher!
+[06/27 21:18:44.248228][debug][16649][UsbDeviceEnumerator.cpp:71] Found 1 device(s):
+[06/27 21:18:44.248234][debug][16649][UsbDeviceEnumerator.cpp:74]   - Name: Astra Mini Pro, PID: 0x065B, SN/ID: AD74B3300X2, connection: USB2.0
+[06/27 21:18:44.248240][info][16649][DeviceManager.cpp:15] Current found device(s): (1)
+[06/27 21:18:44.248248][info][16649][DeviceManager.cpp:24] 	- Name: Astra Mini Pro, PID: 0x065b, SN/ID: AD74B3300X2, Connection: USB2.0
+[06/27 21:18:44.248256][debug][16649][DeviceManager.cpp:52] DeviceManager construct done!
+[06/27 21:18:44.248276][debug][16649][FrameProcessingBlock.cpp:26] Block created with frame queue size: 10
+[06/27 21:18:59.745666][debug][16816][Context.cpp:30] Context creating, work_dir=/home/jia-baos/Project-Cpp/CmakeFull
+[06/27 21:18:59.745734][debug][16816][Context.cpp:49] Config file version=1.1
+[06/27 21:18:59.745751][debug][16816][FrameBufferManager.cpp:23] Max global frame buffer size updated! size=2048.000MB
+[06/27 21:18:59.745759][info][16816][Context.cpp:68] Context created with config: default config!
+[06/27 21:18:59.745791][info][16816][Context.cpp:73] Work directory=/home/jia-baos/Project-Cpp/CmakeFull, SDK version=v1.10.18-20250103-27bf2f6
+[06/27 21:18:59.745807][debug][16816][DeviceManager.cpp:30] DeviceManager init ...
+[06/27 21:18:59.745811][info][16816][LinuxPal.cpp:32] createObPal: create LinuxPal!
+[06/27 21:18:59.746383][debug][16816][DeviceManager.cpp:34] Enable USB Device Enumerator ...
+[06/27 21:18:59.746960][debug][16816][EnumeratorLibusb.cpp:324] queryDevicesInfo done!
+[06/27 21:18:59.746991][debug][16816][UsbDeviceEnumerator.cpp:163] Current usb device port list:
+[06/27 21:18:59.747006][debug][16816][UsbDeviceEnumerator.cpp:166]  - 1-3-14.0 | Orbbec(R) Astra(TM) 3D Camera(F) Depth
+[06/27 21:18:59.747025][warning][16816][OpenNIDeviceInfo.cpp:122] New openni device matched.
+[06/27 21:18:59.747097][info][16816][LinuxPal.cpp:166] Create PollingDeviceWatcher!
+[06/27 21:18:59.747116][debug][16816][UsbDeviceEnumerator.cpp:71] Found 1 device(s):
+[06/27 21:18:59.747121][debug][16816][UsbDeviceEnumerator.cpp:74]   - Name: Astra Mini Pro, PID: 0x065B, SN/ID: AD74B3300X2, connection: USB2.0
+[06/27 21:18:59.747128][info][16816][DeviceManager.cpp:15] Current found device(s): (1)
+[06/27 21:18:59.747137][info][16816][DeviceManager.cpp:24] 	- Name: Astra Mini Pro, PID: 0x065b, SN/ID: AD74B3300X2, Connection: USB2.0
+[06/27 21:18:59.747143][debug][16816][DeviceManager.cpp:52] DeviceManager construct done!
+[06/27 21:18:59.747164][debug][16816][FrameProcessingBlock.cpp:26] Block created with frame queue size: 10
+[06/27 21:19:34.055702][debug][17074][Context.cpp:30] Context creating, work_dir=/home/jia-baos/Project-Cpp/CmakeFull
+[06/27 21:19:34.055782][debug][17074][Context.cpp:49] Config file version=1.1
+[06/27 21:19:34.055797][debug][17074][FrameBufferManager.cpp:23] Max global frame buffer size updated! size=2048.000MB
+[06/27 21:19:34.055803][info][17074][Context.cpp:68] Context created with config: default config!
+[06/27 21:19:34.055822][info][17074][Context.cpp:73] Work directory=/home/jia-baos/Project-Cpp/CmakeFull, SDK version=v1.10.18-20250103-27bf2f6
+[06/27 21:19:34.055841][debug][17074][DeviceManager.cpp:30] DeviceManager init ...
+[06/27 21:19:34.055847][info][17074][LinuxPal.cpp:32] createObPal: create LinuxPal!
+[06/27 21:19:34.056430][debug][17074][DeviceManager.cpp:34] Enable USB Device Enumerator ...
+[06/27 21:19:34.056983][debug][17074][EnumeratorLibusb.cpp:324] queryDevicesInfo done!
+[06/27 21:19:34.057009][debug][17074][UsbDeviceEnumerator.cpp:163] Current usb device port list:
+[06/27 21:19:34.057015][debug][17074][UsbDeviceEnumerator.cpp:166]  - 1-3-15.0 | Orbbec(R) Astra(TM) 3D Camera(F) Depth
+[06/27 21:19:34.057037][warning][17074][OpenNIDeviceInfo.cpp:122] New openni device matched.
+[06/27 21:19:34.057111][info][17074][LinuxPal.cpp:166] Create PollingDeviceWatcher!
+[06/27 21:19:34.057135][debug][17074][UsbDeviceEnumerator.cpp:71] Found 1 device(s):
+[06/27 21:19:34.057144][debug][17074][UsbDeviceEnumerator.cpp:74]   - Name: Astra Mini Pro, PID: 0x065B, SN/ID: AD74B3300X2, connection: USB2.0
+[06/27 21:19:34.057153][info][17074][DeviceManager.cpp:15] Current found device(s): (1)
+[06/27 21:19:34.057164][info][17074][DeviceManager.cpp:24] 	- Name: Astra Mini Pro, PID: 0x065b, SN/ID: AD74B3300X2, Connection: USB2.0
+[06/27 21:19:34.057178][debug][17074][DeviceManager.cpp:52] DeviceManager construct done!
+[06/27 21:19:34.057204][debug][17074][FrameProcessingBlock.cpp:26] Block created with frame queue size: 10

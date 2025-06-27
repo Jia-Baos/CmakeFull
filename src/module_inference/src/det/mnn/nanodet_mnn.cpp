@@ -200,6 +200,7 @@ std::shared_ptr<DetOutput> NanoDetMNN::Detect(const cv::Mat &img)
     std::cout << "inference time:" << elapsed.count() << " s, " << std::endl;
 
     // std::vector<BoxInfo> dets;
+    m_result_list.clear();
     for (int i = 0; i < (int)results.size(); i++) {
         nms(results[i], m_nms_threshold);
 

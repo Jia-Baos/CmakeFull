@@ -4,6 +4,7 @@
 
 OrbbecCamera::OrbbecCamera()
 {
+    std::cout << "Init OrbbecCamera" << std::endl;
     ob::Context::setLoggerSeverity(OB_LOG_SEVERITY_FATAL);
 }
 
@@ -15,44 +16,65 @@ OrbbecCamera::~OrbbecCamera()
     m_pipe = nullptr;
     m_config = nullptr;
     m_device = nullptr;
+
+    std::cout << "Destory OrbbecCamera" << std::endl;
 }
 
 void OrbbecCamera::SetIP(const std::string &str)
 {
+    std::cout << "OrbbecCamera::SetIP()" << std::endl;
     this->m_ip = str;
 }
 
 void OrbbecCamera::SetSN(const std::string &str)
 {
+    std::cout << "OrbbecCamera::SetSN()" << std::endl;
     this->m_sn = str;
 }
 
 bool OrbbecCamera::Wait4Device()
 {
+    std::cout << "OrbbecCamera::Wait4Device()" << std::endl;
     ob::Context ctx;
     auto dev_list = ctx.queryDeviceList();
     int cam_num = dev_list->deviceCount();
     std::stringstream ss;
     ss << "discover camera number is " << cam_num;
     std::cout << ss.str() << std::endl;
+
     for (int i = 0; i < cam_num; i++) {
         if (!m_device) {
-            m_device = dev_list->getDevice(i);
+
+            try {
+                m_device = dev_list->getDevice(i);
+            }
+            catch (ob::Error &e) {
+                std::cout << e.getMessage() << std::endl;
+            }
         }
 
         auto dev_info = m_device->getDeviceInfo();
         auto serial_number = dev_info->serialNumber();
-        break;
+
+        std::cout << "serial_number: " << serial_number << std::endl;
+
+        if (serial_number == m_sn) {
+
+            std::cout << "m_sn: " << m_sn << std::endl;
+            break;
+        }
     }
 
     if (!m_device) {
         return false;
     }
+
     return true;
 }
 
 bool OrbbecCamera::InitDevice()
 {
+    std::cout << "OrbbecCamera::InitDevice()" << std::endl;
     m_pipe = std::make_shared<ob::Pipeline>(m_device);
     m_config = std::make_shared<ob::Config>();
     try {
@@ -106,8 +128,10 @@ bool OrbbecCamera::InitDevice()
         m_config->setAlignMode(ALIGN_D2C_SW_MODE);
     }
 
-    if (!m_pipe)
-        return 0;
+    if (!m_pipe) {
+        return false;
+    }
+
     m_pipe->start(m_config);
 
     auto camera_param = m_pipe->getCameraParam();
@@ -129,7 +153,8 @@ bool OrbbecCamera::InitDevice()
     m_distort.at<float>(0, 5) = camera_param.rgbDistortion.k4;
     m_distort.at<float>(0, 6) = camera_param.rgbDistortion.k5;
     m_distort.at<float>(0, 7) = camera_param.rgbDistortion.k6;
-    return false;
+
+    return true;
 }
 
 void OrbbecCamera::Run()
@@ -137,12 +162,12 @@ void OrbbecCamera::Run()
     while (!m_stop_flag) {
 
         while (!Wait4Device()) {
-            std::this_thread::sleep_for(std::chrono::milliseconds(50));
+            std::this_thread::sleep_for(std::chrono::milliseconds(500));
             continue;
         }
 
         while (!InitDevice()) {
-            std::this_thread::sleep_for(std::chrono::milliseconds(50));
+            std::this_thread::sleep_for(std::chrono::milliseconds(500));
             continue;
         }
 
@@ -150,30 +175,29 @@ void OrbbecCamera::Run()
             auto frame_set = m_pipe->waitForFrames(1000);
 
             if (frame_set == nullptr) {
-                std::stringstream ss;
-                ss << "get frame fail!";
-                std::cout << ss.str() << std::endl;
+                std::cout << "get frame fail!" << std::endl;
+                std::this_thread::sleep_for(std::chrono::milliseconds(100));
+                continue;
+            }
+            if (!frame_set || !frame_set->depthFrame() || !frame_set->colorFrame()) {
+                std::cout << "frameSet, depthFrame or colorFrame is null" << std::endl;
+                std::this_thread::sleep_for(std::chrono::milliseconds(100));
                 continue;
             }
             if (frame_set != nullptr && frame_set->depthFrame() != nullptr && frame_set->colorFrame() != nullptr) {
-                auto depth_value_scale = frame_set->depthFrame()->getValueScale();
+               std::cout << "frameSet, depthFrame and colorFrame is valid" << std::endl;
                 break;
             };
-            if (!frame_set || !frame_set->depthFrame() || !frame_set->colorFrame()) {
-                std::stringstream ss;
-                ss << "frameSet or depthFrame or colorFrame is null";
-                std::cout << ss.str() << std::endl;
-            }
-
-            std::this_thread::sleep_for(std::chrono::milliseconds(100));
         }
 
         auto start = std::chrono::high_resolution_clock::now();
         while (!m_stop_flag) {
             auto frame_set = m_pipe->waitForFrames(100);
             if (frame_set == nullptr) {
+                std::cout << "frameSet, depthFrame or colorFrame is null" << std::endl;
                 continue;
             }
+
             if (frame_set != nullptr && frame_set->depthFrame() != nullptr && frame_set->colorFrame() != nullptr) {
                 auto depth_value_scale = frame_set->depthFrame()->getValueScale();
                 m_point_cloud.setPositionDataScaled(depth_value_scale);
@@ -182,27 +206,23 @@ void OrbbecCamera::Run()
                     int rh = frame_set->colorFrame()->height();
                     {
                         cgu::WRITE_LOCK(this->m_frame_mutex);
-                        m_frame_data.img_rgb = cv::Mat(rh, rw, CV_8UC3, frame_set->colorFrame()->data());
-                        m_frame_data.time_stamp = std::chrono::duration_cast<std::chrono::microseconds>(std::chrono::steady_clock::now().time_since_epoch()).count();
+                        m_data_frame.img = cv::Mat(rh, rw, CV_8UC3, frame_set->colorFrame()->data());
+                        cv::cvtColor(m_data_frame.img , m_data_frame.img, cv::COLOR_BGR2RGB);
+                        m_data_frame.timestamp = std::chrono::duration_cast<std::chrono::microseconds>(std::chrono::steady_clock::now().time_since_epoch()).count();
                     }
 
                     // calc frame freq
                     auto now = std::chrono::high_resolution_clock::now();
                     auto freq = std::chrono::duration_cast<std::chrono::milliseconds>(now - start).count();
                     start = now;
-                    std::stringstream ss;
-                    ss << "frame freq is " << freq << " ms";
-                    std::cout << ss.str() << std::endl;
+
+                    std::cout << "frame freq is " << freq << " ms" << std::endl;
                 }
                 catch (std::exception &e) {
-                    std::stringstream ss;
-                    ss << "handle frame err " << e.what();
-                    std::cout << ss.str() << std::endl;
+                    std::cout << "handle frame err " << e.what() << std::endl;
                 }
             } else {
-                std::stringstream ss;
-                ss << "get color frame or depth frame failed!";
-                std::cout << ss.str() << std::endl;
+                std::cout << "get color frame or depth frame failed!" << std::endl;
                 std::this_thread::sleep_for(std::chrono::milliseconds(50));
             }
         }
@@ -214,8 +234,8 @@ void OrbbecCamera::Run()
 std::optional<cv::Mat> OrbbecCamera::GetImg()
 {
     cgu::READ_LOCK(this->m_frame_mutex);
-    if (m_frame_data.img_rgb.empty()) {
+    if (m_data_frame.img.empty()) {
         return std::nullopt;
     }
-    return m_frame_data.img_rgb;
+    return m_data_frame.img;
 }
