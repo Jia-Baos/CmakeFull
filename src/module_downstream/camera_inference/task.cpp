@@ -1,9 +1,5 @@
 #include "./task.hpp"
 
-#include <iostream>
-#include <typeinfo>
-#include <opencv2/opencv.hpp>
-
 static cv::Mat DrawBoxes(const cv::Mat &img, const std::vector<NanoDet::BoxInfo> &bboxes, ObjectRect effect_roi)
 {
     cv::Mat res_img = img.clone();
@@ -65,6 +61,8 @@ bool TaskManager::Init()
     std::string config_path = "/home/jia-baos/Project-Cpp/CmakeFull/config/nanodet_mnn.yaml";
     m_model = DLModel::GetModel(config_path);
 
+    m_camera = std::make_shared<OrbbecCamera>();
+
     std::cout << "TaskManager::Init() out" << std::endl;
 
     return true;
@@ -84,6 +82,8 @@ bool TaskManager::Run()
 void TaskManager::Start()
 {
     std::cout << "TaskManager::Start() in" << std::endl;
+
+    m_camera->StartCapture(); // 内部创建线程
 
     if (!m_stop_flag) {
 
@@ -130,28 +130,31 @@ void TaskManager::GetImgRun()
     std::cout << "TaskManager::GetImgRun() in" << std::endl;
 
     while (!m_stop_flag) {
-        // std::shared_ptr<Frame> frame = m_camera->getImage();
+        auto res = m_camera->GetDataFrame();
 
-        const std::string img_path = "/home/jia-baos/Project-Cpp/CmakeFull/imgs/000252.jpg";
-        const cv::Mat img = cv::imread(img_path);
-
-        // 模拟采图延迟，后面所有处理的耗时一定要小于此处采图的耗时，否则数据会一直在 m_infer_task 中堆积导致后面处理中判断超时
-        std::this_thread::sleep_for(std::chrono::milliseconds(150));
-
-        const uint64_t timestamp = std::chrono::duration_cast<std::chrono::microseconds>(std::chrono::steady_clock::now().time_since_epoch()).count();
-        // std::cout << "TaskManager::GetImgRun(), timestamp: " << timestamp << std::endl;
-
-        std::shared_ptr<DataFrame> data_frame = std::make_shared<DataFrame>();
-        data_frame->img = img;
-        data_frame->timestamp = timestamp;
-
-        if (!data_frame) {
-            std::this_thread::sleep_for(std::chrono::milliseconds(5));
+        if (!res.has_value() || res.value().img.empty()) {
+            std::this_thread::sleep_for(std::chrono::milliseconds(10));
             continue;
         }
 
+        std::shared_ptr<DataFrame> data_frame = std::make_shared<DataFrame>();
+        data_frame->img = res.value().img;
+        data_frame->timestamp = res.value().timestamp;
+
+        const uint64_t timestamp = std::chrono::duration_cast<std::chrono::microseconds>(std::chrono::steady_clock::now().time_since_epoch()).count();
+        std::cout << "TaskManager::GetImgRun(), raw_data_frame->timestamp: " << data_frame->timestamp << std::endl;
+        std::cout << "TaskManager::GetImgRun(),                 timestamp: " << timestamp << std::endl;
+
+        const double delay_time = (timestamp - data_frame->timestamp) / 1000.0;
+        if (delay_time > m_delay_time) {
+            std::cout << "TaskManager::DLInferRun() deprive old data" << std::endl;
+            continue;
+        }
+
+        std::this_thread::sleep_for(std::chrono::milliseconds(100));
+
         InferTaskData infer_task_data{};
-        infer_task_data.img = img;
+        infer_task_data.img = res.value().img; // resized img
         infer_task_data.raw_data_frame = data_frame;
         m_infer_task.Push(infer_task_data);
     }
@@ -174,7 +177,7 @@ void TaskManager::DLInferRun()
         const uint64_t timestamp = std::chrono::duration_cast<std::chrono::microseconds>(std::chrono::steady_clock::now().time_since_epoch()).count();
         std::cout << "TaskManager::DLInferRun(), raw_data_frame->timestamp: " << infer_task_data.raw_data_frame->timestamp << std::endl;
         std::cout << "TaskManager::DLInferRun(),                 timestamp: " << timestamp << std::endl;
-        
+
         const double delay_time = (timestamp - infer_task_data.raw_data_frame->timestamp) / 1000.0;
         if (delay_time > m_delay_time) {
             std::cout << "TaskManager::DLInferRun() deprive old data" << std::endl;
@@ -224,7 +227,7 @@ void TaskManager::PostProcessingRun()
         const uint64_t timestamp = std::chrono::duration_cast<std::chrono::microseconds>(std::chrono::steady_clock::now().time_since_epoch()).count();
         std::cout << "TaskManager::PostProcessingRun(), raw_data_frame->timestamp: " << post_processing_data.raw_data_frame->timestamp << std::endl;
         std::cout << "TaskManager::PostProcessingRun(),                 timestamp: " << timestamp << std::endl;
-        
+
         const double delay_time = (timestamp - post_processing_data.raw_data_frame->timestamp) / 1000.0;
         if (delay_time > m_delay_time) {
             std::cout << "TaskManager::PostProcessingRun() deprive old data" << std::endl;
@@ -246,7 +249,7 @@ int main()
     std::shared_ptr<TaskManager> task_manager = std::make_shared<TaskManager>();
     task_manager->Init();
     task_manager->Run();
-    std::this_thread::sleep_for(std::chrono::milliseconds(1000));
+    std::this_thread::sleep_for(std::chrono::milliseconds(3000));
     task_manager->Stop();
 
     return 0;

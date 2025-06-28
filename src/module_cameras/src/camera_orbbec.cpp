@@ -207,8 +207,8 @@ void OrbbecCamera::Run()
                     {
                         cgu::WRITE_LOCK(this->m_frame_mutex);
                         m_data_frame.img = cv::Mat(rh, rw, CV_8UC3, frame_set->colorFrame()->data());
-                        cv::cvtColor(m_data_frame.img , m_data_frame.img, cv::COLOR_BGR2RGB);
                         m_data_frame.timestamp = std::chrono::duration_cast<std::chrono::microseconds>(std::chrono::steady_clock::now().time_since_epoch()).count();
+                        cv::cvtColor(m_data_frame.img , m_data_frame.img, cv::COLOR_BGR2RGB);
                     }
 
                     // calc frame freq
@@ -231,11 +231,19 @@ void OrbbecCamera::Run()
     m_stop_flag = false;
 }
 
-std::optional<cv::Mat> OrbbecCamera::GetImg()
+void OrbbecCamera::StartCapture()
+{
+    this->SetSN("AD74B3300X2");
+
+    std::thread cam_thread(&OrbbecCamera::Run, this);
+    cam_thread.detach();
+}
+
+std::optional<DataFrame> OrbbecCamera::GetDataFrame()
 {
     cgu::READ_LOCK(this->m_frame_mutex);
     if (m_data_frame.img.empty()) {
         return std::nullopt;
     }
-    return m_data_frame.img;
+    return m_data_frame;
 }

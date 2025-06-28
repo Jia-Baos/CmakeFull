@@ -1,17 +1,8 @@
 cmake_minimum_required(VERSION 3.27)
 
-project(module_cameras)
-
-# 定义项目版本号宏
-set(PROJECT_VERSION_MAJOR 1)
-set(PROJECT_VERSION_MINOR 0)
-set(PROJECT_VERSION_PATCH 0)
-
-# 生成版本号字符串
-set(PROJECT_VERSION "${PROJECT_VERSION_MAJOR}.${PROJECT_VERSION_MINOR}.${PROJECT_VERSION_PATCH}")
+project(module_downstream_nanodet_mnn_camera_infer)
 
 message(STATUS "Project Name: ${PROJECT_NAME}")
-message(STATUS "Project version: ${PROJECT_VERSION}")
 message(STATUS "Project Dir: ${CMAKE_CURRENT_SOURCE_DIR}")
 
 # obsensor sdk
@@ -22,13 +13,9 @@ file(GLOB ORBBEC_LIBS ${OrbbecSDK_LIBRARY_DIRS}/lib*.so)
 message(STATUS "library: ${ORBBEC_LIBS}")
 
 # 将源代码添加到此项目的可执行文件。
-file(GLOB FILES_SRC ${CMAKE_CURRENT_SOURCE_DIR}/src/*.cpp)
-file(GLOB FILES_HEADERS ${CMAKE_CURRENT_SOURCE_DIR}/include/*.h ${CMAKE_CURRENT_SOURCE_DIR}/include/*.hpp)
+file(GLOB FILES_SRC ${CMAKE_CURRENT_SOURCE_DIR}/*.cpp)
 
-add_library(${PROJECT_NAME} SHARED ${FILES_SRC})
-
-set_target_properties(${PROJECT_NAME} PROPERTIES VERSION ${PROJECT_VERSION} SOVERSION ${PROJECT_VERSION_MAJOR})
-# set_target_properties(${PROJECT_NAME} PROPERTIES OUTPUT_NAME "${PROJECT_NAME}.${PROJECT_VERSION}")
+add_executable(${PROJECT_NAME} ${FILES_SRC})
 
 find_package(OpenCV REQUIRED)
 
@@ -41,29 +28,44 @@ else()
         message(STATUS "Could not find OpenCV library")
 endif()
 
+set(MNN_DIR ${CMAKE_SOURCE_DIR}/3rdparty/MNN)
+
 # 链接库头文件路径
 target_include_directories(${PROJECT_NAME}
-        PUBLIC
+        PRIVATE
         ${OpenCV_INCLUDE_DIRS}
         ${OrbbecSDK_INCLUDE_DIR}
-        ${CMAKE_CURRENT_SOURCE_DIR}/include)
+        ${CMAKE_SOURCE_DIR}/src/module_cameras/include
+        ${CMAKE_INSTALL_PREFIX}/include/module_cameras
+        ${MNN_DIR}/include/MNN
+        ${CMAKE_SOURCE_DIR}/src/module_utils/include
+        ${CMAKE_SOURCE_DIR}/src/module_inference/include
+        ${CMAKE_SOURCE_DIR}/src/module_inference/include/det
+        ${CMAKE_SOURCE_DIR}/src/module_inference/include/det/mnn
+        ${CMAKE_INSTALL_PREFIX}/src/module_utils/include
+        ${CMAKE_INSTALL_PREFIX}/include/module_inference
+        ${CMAKE_INSTALL_PREFIX}/include/module_inference/det
+        ${CMAKE_INSTALL_PREFIX}/include/module_inference/det/mnn)
 
 # 链接库文件夹
 # 如果动态链接库和静态链接库同名，优先调用静态链接库
 target_link_directories(${PROJECT_NAME}
         PRIVATE
-        ${OrbbecSDK_LIBRARY_DIRS})
+        ${MNN_DIR}/lib
+        ${OrbbecSDK_LIBRARY_DIRS}
+        ${CMAKE_INSTALL_PREFIX}/lib)
 
 target_link_libraries(${PROJECT_NAME}
-        PRIVATE
+        PUBLIC
         pthread
+        MNN
         ${ORBBEC_LIBS}
-        ${OpenCV_LIBS})
+        ${OpenCV_LIBS}
+        module_cameras
+        module_inference
+        )
 
 install(TARGETS ${PROJECT_NAME}
         ARCHIVE DESTINATION lib
         LIBRARY DESTINATION lib
         RUNTIME DESTINATION bin)
-
-install(FILES ${FILES_HEADERS}
-        DESTINATION include/${PROJECT_NAME})

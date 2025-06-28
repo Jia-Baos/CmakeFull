@@ -40,6 +40,8 @@ public:
     virtual bool Wait4Device() = 0;
     virtual bool InitDevice() = 0;
     virtual void Run() = 0;
+    virtual void StartCapture() = 0;
+    
     bool Stop()
     {
         m_stop_flag = true;
@@ -50,7 +52,7 @@ public:
         return true;
     }
 
-    virtual std::optional<cv::Mat> GetImg() = 0;
+    virtual std::optional<DataFrame> GetDataFrame() = 0;
 
 public:
     std::string m_ip{};                     // 网口相机 IP

@@ -1,6 +1,7 @@
 #ifndef MODULE_UTILS_SAFE_QUEUE_HPP
 #define MODULE_UTILS_SAFE_QUEUE_HPP
 
+#include <iostream>
 #include <mutex>
 #include <queue>
 #include <algorithm>
@@ -44,6 +45,12 @@ public:
     {
         std::unique_lock<std::mutex> locker(m_mutex);
         m_queue.emplace(val);
+
+        if (m_queue.size() > m_queue_capacity) {
+            m_queue.pop();
+            std::cout << "m_queue.pop()" << std::endl;
+        }
+
         m_cond.notify_one();
     }
 
@@ -53,6 +60,11 @@ public:
     {
         std::unique_lock<std::mutex> locker(m_mutex);
         m_queue.emplace(std::move(val));
+
+        if (m_queue.size() > m_queue_capacity) {
+            m_queue.pop();
+            std::cout << "m_queue.pop()" << std::endl;
+        }
         m_cond.notify_one();
     }
 
@@ -116,6 +128,8 @@ public:
     }
 
 protected:
+    size_t m_queue_capacity{ 3 };
+
     std::mutex m_mutex;
     std::queue<T> m_queue;
     std::condition_variable m_cond;

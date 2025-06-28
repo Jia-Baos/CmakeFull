@@ -19,8 +19,9 @@ public:
     bool Wait4Device() override;
     bool InitDevice() override;
     void Run() override;
+    void StartCapture() override;
 
-    std::optional<cv::Mat> GetImg() override;
+    std::optional<DataFrame> GetDataFrame() override;
 
 private:
     std::shared_ptr<ob::Device> m_device{ nullptr };
