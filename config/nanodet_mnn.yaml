@@ -9,8 +9,8 @@ framework: mnn
 input_width: 416
 input_height: 416
 num_thread: 4
-nms_threshold: 0.4
-confidence_threshold: 0.5
+nms_threshold: 0.5
+confidence_threshold: 0.4
 
 # label need to be extracted
 class: 

@@ -4,6 +4,7 @@ project(module_inference)
 
 option(ENABLE_MNN "support mnn model" ON)
 option(ENABLE_NCNN "support ncnn model" ON)
+option(ENABLE_OPENVINO "support openvino model" ON)
 
 # 定义项目版本号宏
 set(PROJECT_VERSION_MAJOR 1)
@@ -40,13 +41,29 @@ if (ENABLE_NCNN)
     
     find_package(ncnn REQUIRED)
     if(NOT TARGET ncnn)
-        message(WARNING "ncnn NOT FOUND!  Please set ncnn_DIR environment variable")
+        message(STATUS "ncnn not found, please set ncnn_DIR environment variable")
     else()
-        message("ncnn FOUND ")
+        message(STATUS "ncnn found ")
     endif()
 endif()
 
-set(FILES_SRC ${FILES_SRC_BASE} ${FILES_SRC_DET_MNN} ${FILES_SRC_DET_NCNN})
+if(ENABLE_OPENVINO)
+    message(STATUS "OPENVINO enabled")
+    add_compile_definitions(USE_OPENVINO)
+    file(GLOB FILES_SRC_DET_OPENVINO ${CMAKE_CURRENT_SOURCE_DIR}/src/det/openvino/*.cpp)
+    file(GLOB FILES_HEADERS_DET_OPENVINO ${CMAKE_CURRENT_SOURCE_DIR}/include/det/openvino/*.h ${CMAKE_CURRENT_SOURCE_DIR}/include/det/openvino/*.hpp)
+
+    set(OpenVINO_DIR "/usr/local/runtime/cmake")
+    find_package(OpenVINO REQUIRED COMPONENTS Runtime)
+
+    if(NOT TARGET openvino::runtime)
+        message(STATUS "openvino not found, please set openvino environment variable")
+    else()
+        message(STATUS "openvino found")
+    endif()
+endif()
+
+set(FILES_SRC ${FILES_SRC_BASE} ${FILES_SRC_DET_MNN} ${FILES_SRC_DET_NCNN} ${FILES_SRC_DET_OPENVINO})
 
 add_library(${PROJECT_NAME} SHARED ${FILES_SRC})
 
@@ -70,9 +87,10 @@ target_include_directories(${PROJECT_NAME}
         ${OpenCV_INCLUDE_DIRS}
         ${CMAKE_CURRENT_SOURCE_DIR}/include
         ${CMAKE_CURRENT_SOURCE_DIR}/include/det
+        ${MNN_DIR}/include/MNN
         ${CMAKE_CURRENT_SOURCE_DIR}/include/det/mnn
         ${CMAKE_CURRENT_SOURCE_DIR}/include/det/ncnn
-        ${MNN_DIR}/include/MNN
+        ${CMAKE_CURRENT_SOURCE_DIR}/include/det/openvino
         )
 
 # 链接库文件夹，如果动态链接库和静态链接库同名，优先调用静态链接库
@@ -85,7 +103,9 @@ target_link_libraries(${PROJECT_NAME}
         PRIVATE
         ${OpenCV_LIBS}
         MNN
-        ncnn)
+        ncnn
+        openvino::runtime
+        )
 
 install(TARGETS ${PROJECT_NAME}
         ARCHIVE DESTINATION lib
@@ -103,3 +123,6 @@ install(FILES ${FILES_HEADERS_DET_MNN}
 
 install(FILES ${FILES_HEADERS_DET_NCNN}
         DESTINATION include/${PROJECT_NAME}/det/ncnn)
+
+install(FILES ${FILES_HEADERS_DET_OPENVINO}
+        DESTINATION include/${PROJECT_NAME}/det/openvino)

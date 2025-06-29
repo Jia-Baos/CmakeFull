@@ -7,7 +7,7 @@ inline std::string replaceExtension(std::string input, std::string new_ext)
     return input.substr(0, input.find_last_of('.')) + new_ext;
 }
 
-inline void generate_grid_center_priors(const int input_height, const int input_width, std::vector<int> &strides, std::vector<NanoDet::CenterPrior> &center_priors)
+inline void generate_grid_center_priors(const int input_height, const int input_width, const std::vector<int> &strides, std::vector<NanoDet::CenterPrior> &center_priors)
 {
     for (int i = 0; i < (int)strides.size(); i++) {
         int stride = strides[i];
@@ -58,7 +58,7 @@ inline int activation_function_softmax(const _Tp *src, _Tp *dst, int length)
     return 0;
 }
 
-static cv::Mat DrawBoxes(const cv::Mat &img, const std::vector<NanoDet::BoxInfo> &bboxes, ObjectRect effect_roi)
+static cv::Mat DrawBoxes(const cv::Mat &img, const std::vector<NanoDet::BoxInfo> &bboxes, const ObjectRect effect_roi)
 {
     cv::Mat res_img = img.clone();
 
@@ -193,7 +193,7 @@ std::shared_ptr<DetOutput> NanoDetMNN::Detect(const cv::Mat &img)
     std::vector<NanoDet::CenterPrior> center_priors;
     generate_grid_center_priors(this->m_input_height, this->m_input_width, this->strides, center_priors);
 
-    decode_infer(&tensor_preds_host, center_priors, m_confidence_threshold, results);
+    decode_infer(tensor_preds_host, center_priors, m_confidence_threshold, results);
 
     auto end = std::chrono::steady_clock::now();
     std::chrono::duration<double> elapsed = end - start;
@@ -225,7 +225,7 @@ std::shared_ptr<DetModel> NanoDetMNN::GetModel(const std::string &config_path)
     return model;
 }
 
-void NanoDetMNN::decode_infer(MNN::Tensor *pred, std::vector<NanoDet::CenterPrior> &center_priors, float threshold, std::vector<std::vector<NanoDet::BoxInfo>> &results)
+void NanoDetMNN::decode_infer(const MNN::Tensor &pred, const std::vector<NanoDet::CenterPrior> &center_priors, const float threshold, std::vector<std::vector<NanoDet::BoxInfo>> &results)
 {
     const int kNumPoints = center_priors.size();
     const int kNumChannels = num_class + (reg_max + 1) * 4;
@@ -238,7 +238,7 @@ void NanoDetMNN::decode_infer(MNN::Tensor *pred, std::vector<NanoDet::CenterPrio
         const int kStride = center_priors[idx].stride;
 
         // preds is a tensor with shape [num_points, num_channels]
-        const float *scores = pred->host<float>() + (idx * kNumChannels);
+        const float *scores = pred.host<float>() + (idx * kNumChannels);
 
         float score = 0;
         int cur_label = 0;
@@ -249,13 +249,13 @@ void NanoDetMNN::decode_infer(MNN::Tensor *pred, std::vector<NanoDet::CenterPrio
             }
         }
         if (score > threshold) {
-            const float *bbox_pred = pred->host<float>() + idx * kNumChannels + num_class;
+            const float *bbox_pred = pred.host<float>() + idx * kNumChannels + num_class;
             results[cur_label].push_back(disPred2Bbox(bbox_pred, cur_label, score, kCtX, kCtY, kStride));
         }
     }
 }
 
-NanoDet::BoxInfo NanoDetMNN::disPred2Bbox(const float *&dfl_det, int label, float score, int x, int y, int stride)
+NanoDet::BoxInfo NanoDetMNN::disPred2Bbox(const float *dfl_det, const int label, const float score, const int x, const int y, const int stride)
 {
     float ct_x = x * stride;
     float ct_y = y * stride;
@@ -284,7 +284,7 @@ NanoDet::BoxInfo NanoDetMNN::disPred2Bbox(const float *&dfl_det, int label, floa
     return NanoDet::BoxInfo{ xmin, ymin, xmax, ymax, score, label };
 }
 
-void NanoDetMNN::nms(std::vector<NanoDet::BoxInfo> &input_boxes, float nms_thresh)
+void NanoDetMNN::nms(std::vector<NanoDet::BoxInfo> &input_boxes, const float nms_thresh)
 {
     std::sort(input_boxes.begin(), input_boxes.end(), [](NanoDet::BoxInfo a, NanoDet::BoxInfo b) { return a.score > b.score; });
     std::vector<float> v_area(input_boxes.size());

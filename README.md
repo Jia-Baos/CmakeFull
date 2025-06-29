@@ -9,6 +9,8 @@
 ### 推理模块（包含预处理、推理、后处理）
 
 ```
+source /usr/local/setupvars.sh  // 激活 openvino 环境
+
 export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$(pwd)/install/lib
 export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$(pwd)/3rdparty/orbbec/lib_x64
 export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$(pwd)/3rdparty/MNN/lib
@@ -29,16 +31,21 @@ export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$(pwd)/3rdparty/NCNN/lib/cmake/ncnn
 ### ```static```
 1. 局部函数，只在当前翻译单元 ```.cpp``` 中使用，对外不具有共享性
 
-### 重定义，函数定义在头文件中，并且头文件被多个源文件包含;
+### 重定义
 
-1. 头文件中 ```inline``` 相关函数，允许变量或函数在多个文件中重复定义，如果函数签名相同，实现不同，具体调用哪个实现与编译器实现有关
-2. 源文件中 ```extern``` 相关函数，表明相关函数在别的翻译单元定义
+1. 函数定义在头文件中，并且头文件被多个源文件包含;
+2. 头文件中 ```inline``` 相关函数，允许变量或函数在多个文件中重复定义，如果函数签名相同，实现不同，具体调用哪个实现与编译器实现有关
+3. 源文件中 ```extern``` 相关函数，表明相关函数在别的翻译单元定义
 
 ### linux下usb权限设置
 
 ```
-lsusb   // 枚举usb设备
-ls /dev/bus/usb/ -lR    // 查看usb设备节点访问权限
-sudo chmod 666 /dev/bus/usb/xxx/yyy // 修改usb设备访问权限使能普通用户操作（重启之后权限自动恢复），其中xxx对应lsusb输出信息中的bus序号，yyy对应device序号
-```
+// 枚举usb设备
+lsusb
 
+// 查看usb设备节点访问权限
+ls /dev/bus/usb/ -lR
+
+// 修改usb设备访问权限使能普通用户操作（重启之后权限自动恢复），其中xxx对应lsusb输出信息中的bus序号，yyy对应device序号
+sudo chmod 666 /dev/bus/usb/xxx/yyy
+```

@@ -10,13 +10,6 @@ OrbbecCamera::OrbbecCamera()
 
 OrbbecCamera::~OrbbecCamera()
 {
-    if (m_pipe) {
-        m_pipe->stop();
-    }
-    m_pipe = nullptr;
-    m_config = nullptr;
-    m_device = nullptr;
-
     std::cout << "Destory OrbbecCamera" << std::endl;
 }
 
@@ -38,9 +31,8 @@ bool OrbbecCamera::Wait4Device()
     ob::Context ctx;
     auto dev_list = ctx.queryDeviceList();
     int cam_num = dev_list->deviceCount();
-    std::stringstream ss;
-    ss << "discover camera number is " << cam_num;
-    std::cout << ss.str() << std::endl;
+
+    std::cout << "discover camera number: " << cam_num << std::endl;
 
     for (int i = 0; i < cam_num; i++) {
         if (!m_device) {
@@ -90,15 +82,12 @@ bool OrbbecCamera::InitDevice()
         }
         int rw = color_profile->width();
         int rh = color_profile->height();
-        std::stringstream ss;
-        ss << "rgb size: " << rh << " * " << rw;
-        std::cout << ss.str() << std::endl;
+
+        std::cout << "rgb size: " << rh << " * " << rw << std::endl;
         m_config->enableStream(color_profile);
     }
     catch (ob::Error &e) {
-        std::stringstream ss;
-        ss << "Current device is not support color sensor!";
-        std::cout << ss.str() << std::endl;
+        std::cout << "Current device is not support color sensor!" << std::endl;
     }
     try {
         auto depth_profiles = m_pipe->getStreamProfileList(OB_SENSOR_DEPTH);
@@ -112,15 +101,12 @@ bool OrbbecCamera::InitDevice()
 
         int pw = depth_profile->width();
         int ph = depth_profile->height();
-        std::stringstream ss;
-        ss << "depth size : " << ph << " * " << pw;
-        std::cout << ss.str() << std::endl;
+
+        std::cout << "depth size : " << ph << " * " << pw << std::endl;
         m_config->enableStream(depth_profile);
     }
     catch (ob::Error &e) {
-        std::stringstream ss;
-        ss << "Current device is not support depth sensor!";
-        std::cout << ss.str() << std::endl;
+        std::cout << "Current device is not support depth sensor!" << std::endl;
     }
     if (m_device->isPropertySupported(OB_PROP_DEPTH_ALIGN_HARDWARE_BOOL, OB_PERMISSION_READ)) {
         m_config->setAlignMode(ALIGN_D2C_HW_MODE);
@@ -185,7 +171,7 @@ void OrbbecCamera::Run()
                 continue;
             }
             if (frame_set != nullptr && frame_set->depthFrame() != nullptr && frame_set->colorFrame() != nullptr) {
-               std::cout << "frameSet, depthFrame and colorFrame is valid" << std::endl;
+                std::cout << "frameSet, depthFrame and colorFrame is valid" << std::endl;
                 break;
             };
         }
@@ -208,7 +194,7 @@ void OrbbecCamera::Run()
                         cgu::WRITE_LOCK(this->m_frame_mutex);
                         m_data_frame.img = cv::Mat(rh, rw, CV_8UC3, frame_set->colorFrame()->data());
                         m_data_frame.timestamp = std::chrono::duration_cast<std::chrono::microseconds>(std::chrono::steady_clock::now().time_since_epoch()).count();
-                        cv::cvtColor(m_data_frame.img , m_data_frame.img, cv::COLOR_BGR2RGB);
+                        cv::cvtColor(m_data_frame.img, m_data_frame.img, cv::COLOR_BGR2RGB);
                     }
 
                     // calc frame freq
@@ -226,6 +212,13 @@ void OrbbecCamera::Run()
                 std::this_thread::sleep_for(std::chrono::milliseconds(50));
             }
         }
+
+        if (m_pipe) {
+            m_pipe->stop();
+        }
+        m_pipe = nullptr;
+        m_config = nullptr;
+        m_device = nullptr;
     }
 
     m_stop_flag = false;

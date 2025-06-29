@@ -13,6 +13,7 @@ add_executable(${PROJECT_NAME} ${main_files})
 target_include_directories(${PROJECT_NAME}
        PRIVATE
        ${CMAKE_SOURCE_DIR}/3rdparty/fmt/include
+       ${CMAKE_SOURCE_DIR}/3rdparty/spdlog/include
        ${CMAKE_SOURCE_DIR}/src/module_utils/include
        ${CMAKE_INSTALL_PREFIX}/include/module_utils)
 

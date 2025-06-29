@@ -7,7 +7,7 @@ inline std::string replaceExtension(std::string input, std::string new_ext)
     return input.substr(0, input.find_last_of('.')) + new_ext;
 }
 
-inline void generate_grid_center_priors(const int input_height, const int input_width, std::vector<int> &strides, std::vector<NanoDet::CenterPrior> &center_priors)
+inline void generate_grid_center_priors(const int input_height, const int input_width, const std::vector<int> &strides, std::vector<NanoDet::CenterPrior> &center_priors)
 {
     for (int i = 0; i < (int)strides.size(); i++) {
         int stride = strides[i];
@@ -58,7 +58,7 @@ inline int activation_function_softmax(const _Tp *src, _Tp *dst, int length)
     return 0;
 }
 
-static cv::Mat DrawBoxes(const cv::Mat &img, const std::vector<NanoDet::BoxInfo> &bboxes, ObjectRect effect_roi)
+static cv::Mat DrawBoxes(const cv::Mat &img, const std::vector<NanoDet::BoxInfo> &bboxes, const ObjectRect effect_roi)
 {
     cv::Mat res_img = img.clone();
 
@@ -224,7 +224,7 @@ std::shared_ptr<DetModel> NanoDetNCNN::GetModel(const std::string &config_path)
     return model;
 }
 
-void NanoDetNCNN::decode_infer(ncnn::Mat &feats, std::vector<NanoDet::CenterPrior> &center_priors, float threshold, std::vector<std::vector<NanoDet::BoxInfo>> &results)
+void NanoDetNCNN::decode_infer(const ncnn::Mat &feats, const std::vector<NanoDet::CenterPrior> &center_priors, const float threshold, std::vector<std::vector<NanoDet::BoxInfo>> &results)
 {
     const int kNumPoints = center_priors.size();
 
@@ -252,7 +252,7 @@ void NanoDetNCNN::decode_infer(ncnn::Mat &feats, std::vector<NanoDet::CenterPrio
     }
 }
 
-NanoDet::BoxInfo NanoDetNCNN::disPred2Bbox(const float *&dfl_det, int label, float score, int x, int y, int stride)
+NanoDet::BoxInfo NanoDetNCNN::disPred2Bbox(const float *dfl_det, const int label, const float score, const int x, const int y, const int stride)
 {
     float ct_x = x * stride;
     float ct_y = y * stride;
@@ -281,7 +281,7 @@ NanoDet::BoxInfo NanoDetNCNN::disPred2Bbox(const float *&dfl_det, int label, flo
     return NanoDet::BoxInfo{ xmin, ymin, xmax, ymax, score, label };
 }
 
-void NanoDetNCNN::nms(std::vector<NanoDet::BoxInfo> &input_boxes, float nms_thresh)
+void NanoDetNCNN::nms(std::vector<NanoDet::BoxInfo> &input_boxes, const float nms_thresh)
 {
     std::sort(input_boxes.begin(), input_boxes.end(), [](NanoDet::BoxInfo a, NanoDet::BoxInfo b) { return a.score > b.score; });
     std::vector<float> v_area(input_boxes.size());

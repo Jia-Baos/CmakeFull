@@ -19,6 +19,7 @@ inline std::string ModelTypeToString(ModelType type) {
         default: return "Unknown";
     }
 }
+
 /**
  *   通过函数指针返回具体任务实例
  */

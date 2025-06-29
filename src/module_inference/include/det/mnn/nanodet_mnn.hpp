@@ -20,9 +20,9 @@ public:
     virtual std::shared_ptr<DetOutput> Detect(const cv::Mat &img);
     static std::shared_ptr<DetModel> GetModel(const std::string &config_path);
 
-    void decode_infer(MNN::Tensor *pred, std::vector<NanoDet::CenterPrior> &center_priors, float threshold, std::vector<std::vector<NanoDet::BoxInfo>> &results);
-    NanoDet::BoxInfo disPred2Bbox(const float *&dfl_det, int label, float score, int x, int y, int stride);
-    void nms(std::vector<NanoDet::BoxInfo> &input_boxes, float nms_thresh);
+    void decode_infer(const MNN::Tensor &pred, const std::vector<NanoDet::CenterPrior> &center_priors, const float threshold, std::vector<std::vector<NanoDet::BoxInfo>> &results);
+    NanoDet::BoxInfo disPred2Bbox(const float *dfl_det, const int label, const float score, const int x, const int y, const int stride);
+    void nms(std::vector<NanoDet::BoxInfo> &input_boxes, const float nms_thresh);
 
     // modify these parameters to the same with your config if you want to use your own model
     // int input_size[2] = { 416, 416 };          // input height and width
