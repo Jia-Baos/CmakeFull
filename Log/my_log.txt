@@ -1,0 +1,2 @@
+[2025-06-29 19:48:41.722] [file_logger] [info] Hello, this is an info message!
+[2025-06-29 19:48:41.723] [file_logger] [error] This is an error message with number: 42

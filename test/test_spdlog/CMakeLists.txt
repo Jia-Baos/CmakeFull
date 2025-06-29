@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.27)
 
-project(test_module_utils)
+project(test_spdlog)
 
 message(STATUS "Project Name: ${PROJECT_NAME}")
 message(STATUS "Project Dir: ${CMAKE_CURRENT_SOURCE_DIR}")
@@ -13,8 +13,8 @@ add_executable(${PROJECT_NAME} ${main_files})
 target_include_directories(${PROJECT_NAME}
        PRIVATE
        ${CMAKE_SOURCE_DIR}/3rdparty/fmt/include
-       ${CMAKE_SOURCE_DIR}/src/module_utils/include
-       ${CMAKE_INSTALL_PREFIX}/include/module_utils)
+       ${CMAKE_SOURCE_DIR}/3rdparty/spdlog/include
+       )
 
 # 链接库文件路径
 # target_link_directories()
