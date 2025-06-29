@@ -1,6 +1,6 @@
 #include "./task.hpp"
 
-static cv::Mat DrawBoxes(const cv::Mat &img, const std::vector<NanoDet::BoxInfo> &bboxes, ObjectRect effect_roi)
+static cv::Mat DrawBoxes(const cv::Mat &img, const std::vector<NanoDet::BoxInfo> &bboxes, const ObjectRect effect_roi)
 {
     cv::Mat res_img = img.clone();
 
@@ -151,7 +151,7 @@ void TaskManager::GetImgRun()
             continue;
         }
 
-        std::this_thread::sleep_for(std::chrono::milliseconds(100));
+        // std::this_thread::sleep_for(std::chrono::milliseconds(10));
 
         InferTaskData infer_task_data{};
         infer_task_data.img = res.value().img; // resized img

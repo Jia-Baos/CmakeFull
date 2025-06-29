@@ -52,7 +52,7 @@ private:
     std::shared_ptr<OrbbecCamera> m_camera; // 智能指针最好手动初始化
     std::shared_ptr<DLModel> m_model;
 
-    int m_delay_time = 200; // ms
+    int m_delay_time = 300; // ms，根据整个流程所需时间调整
     std::atomic<bool> m_stop_flag{ false };
     TaskQueue<InferTaskData> m_infer_task;
     TaskQueue<PostProcessingData> m_post_processing_task;

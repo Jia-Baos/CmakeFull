@@ -3,6 +3,7 @@ build/
 install/
 .vscode/
 .cache/
+Log/
 
 # Prerequisites
 *.d
