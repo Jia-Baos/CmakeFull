@@ -41,6 +41,12 @@ export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$(pwd)/install/lib
 export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$(pwd)/3rdparty/orbbec/lib_x64
 export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$(pwd)/3rdparty/MNN/lib
 export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$(pwd)/3rdparty/NCNN/lib/cmake/ncnn
+
+// 这种方式更合理
+export LD_LIBRARY_PATH=$(pwd)/install/lib:$LD_LIBRARY_PATH
+export LD_LIBRARY_PATH=$(pwd)/3rdparty/orbbec/lib_x64:$LD_LIBRARY_PATH
+export LD_LIBRARY_PATH=$(pwd)/3rdparty/MNN/lib:$LD_LIBRARY_PATH
+export LD_LIBRARY_PATH=$(pwd)/3rdparty/NCNN/lib/cmake/ncnn:$LD_LIBRARY_PATH
 ```
 
 
