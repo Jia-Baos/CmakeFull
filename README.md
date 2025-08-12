@@ -55,11 +55,40 @@ export LD_LIBRARY_PATH=$(pwd)/3rdparty/NCNN/lib/cmake/ncnn:$LD_LIBRARY_PATH
 ### ```MNN``` 编译
 [MNN](https://mnn-docs.readthedocs.io/en/latest/index.html)
 
+```bash
+./schema/generate.sh
+
+mkdir build && cd build
+
+cmake -DCMAKE_INSTALL_PREFIX=/home/xxx/Project-Python/MNN/install ..
+
+make -j8
+
+make install
+```
+
 ### ```NCNN``` 编译
 [NCNN](https://github.com/Tencent/ncnn/wiki/how-to-build)
+
+```bash
+sudo apt-get install protobuf-compiler libprotobuf-dev
+
+mkdir build && cd build
+
+cmake -DCMAKE_INSTALL_PREFIX=/home/xxx/Project-Python/ncnn/install ..
+
+make -j8
+
+make install
+```
 
 ### ```Openvino``` 编译
 [Openvino](https://docs.openvino.ai/2025/get-started/install-openvino.html?PACKAGE=OPENVINO_BASE&VERSION=v_2025_2_0&OP_SYSTEM=LINUX&DISTRIBUTION=PIP)
 
+```bash
+source /usr/local/setupvars.sh  # 激活 openvino 环境
+```
+
+### 其他
 [C++重定义、usb设备打开](docs/utils.md)
 
