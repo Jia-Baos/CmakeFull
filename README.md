@@ -52,5 +52,14 @@ export LD_LIBRARY_PATH=$(pwd)/3rdparty/NCNN/lib/cmake/ncnn:$LD_LIBRARY_PATH
 
 ## 拓展知识
 
+### ```MNN``` 编译
+[MNN](https://mnn-docs.readthedocs.io/en/latest/index.html)
+
+### ```NCNN``` 编译
+[NCNN](https://github.com/Tencent/ncnn/wiki/how-to-build)
+
+### ```Openvino``` 编译
+[Openvino](https://docs.openvino.ai/2025/get-started/install-openvino.html?PACKAGE=OPENVINO_BASE&VERSION=v_2025_2_0&OP_SYSTEM=LINUX&DISTRIBUTION=PIP)
+
 [C++重定义、usb设备打开](docs/utils.md)
 
